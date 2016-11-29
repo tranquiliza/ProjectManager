@@ -1,6 +1,6 @@
 ﻿Virksomheden: https://brandbjerg.dk/ - Brandbjerg Højskole
 
-Kontakt Person: Allan Salling Sønder, Maintainance.
+Kontakt Person: Allan Salling Sønder, Maintainance. (Nummer er på min TLF).
 
 Brugeren ønsker at kunne oprette opgaver og skabe en nem oversigt over disse opgaver på et enkelt vindue. Disse opgaver skal kunne markeres alt efter hvorledes de er 
 	* Igangsat, 
