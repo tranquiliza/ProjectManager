@@ -1,0 +1,52 @@
+﻿Virksomheden: https://brandbjerg.dk/ - Brandbjerg Højskole
+
+Kontakt Person: Allan Salling Sønder, Maintainance.
+
+Brugeren ønsker at kunne oprette opgaver og skabe en nem oversigt over disse opgaver på et enkelt vindue. Disse opgaver skal kunne markeres alt efter hvorledes de er 
+	* Igangsat, 
+	* På standby,  
+	* Færdige 
+	* Afventer godkendelse af ledelsen.
+Disse opgaver skal kunne sorteres efter markeringen. (Igang øverst, derefter standby, godkendt og afventer).
+Alle opgaver indeholder:
+	* Navn
+	* Beskrivelse af opgaven (Kort).
+	* Forventet start, i form af dato. (Kan være blank).
+	* Beskrivelse af hvem der udfører opgaven (Elev opg? Personale medlems navn etc.).
+
+Mulighed for udprintning af siden. Det skal være nemt at udprinte opgavearket. 
+
+Der ønskes mulighed for at kunne sætte nogle opgaver på en højere prioritet da de skal færdiggøres inden en frist (F.eks: Skal være klar før Jul). 
+
+Det ønskes at kunne fremhæve specialt vigtige opgaver, med en tydelig farve og de skal sorteres øverst på listen, for at give overblik.
+
+Det ønskes at kunne sammenkoble opgaver med afdeler (Domæne viden mangles). (Virksomheds besøg skal hjælpe på dette).
+
+Mulighed for at opgaver kan tilknyttes info om: Extern eller Intern opgave, således brugeren kan se om opgaven skal udføres af fagfolk. 
+
+Større opgaver kan have flere underpunkter som indeholder mere specifikke opgaver, som alle skal løses for at løse primær opgave. Disse underpunkter indeholder:
+	* Navn
+	* Beskrivelse af opgaven (Kort).
+	* Forventet start, i form af dato.
+	* Beskrivelse af hvem der udfører opgaven (Elev opg? Personale medlems navn etc.).
+
+Muligvis en app, så brugeren kan se opgaverne på farten, og ikke behøver et stykke papir? (Dette kræver internet og er ikke hands-on, muligvis ikke en god løsning).  
+	(Appen kunne derimode vise opdateringer direkte).
+
+Email Historik på bestemte opgaver der har korrespondance mellem bruger og tilbudsgivere. (IKKE PRIO).
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Noter til mig selv:
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+For at løse disse problemer skal jeg bruge: 
+* Database (Microsoft SQL).
+	Faget indrages ved at oprette forskellige brugere til databasen, således at det kun er bestemte brugere der kan afgøre om opgaver er færdige, skulle det ønskes. 
+	(Dette indrager sikkerhed af database).
+* Front-End til design af en side hvor disse opgaver kan indsættes nemt, og en anden side, hvor opgaver bliver vist i beskrivet følge.
+	(Kan muligvis slås sammen, skal være overskueligt dog).
+	(Muligvis løst med Javascript?).
+	** Appen kan være en del af front-end. 
+* Backend til at gøre brugerens liv nemmere når det kommer til at skulle gøre dette. (ASP).
+Det vil være en fordel at sørge for at diverse backend koder kan genbruges til App, eller eventuelt skrivebords application.
+
+En virkende prototype ønskes klar før: Tirsdag den 6. December, da dette er dagen for besøget på virksomheden.
