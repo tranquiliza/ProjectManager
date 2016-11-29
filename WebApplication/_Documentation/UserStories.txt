@@ -20,7 +20,8 @@ Der ønskes mulighed for at kunne sætte nogle opgaver på en højere prioritet 
 
 Det ønskes at kunne fremhæve specialt vigtige opgaver, med en tydelig farve og de skal sorteres øverst på listen, for at give overblik.
 
-Det ønskes at kunne sammenkoble opgaver med afdeler (Domæne viden mangles). (Virksomheds besøg skal hjælpe på dette).
+Det ønskes at kunne sammenkoble opgaver med afdeler (Domæne viden mangles). (Virksomheds besøg skal hjælpe på dette). 
+Eks:(Mulighed for at trække information om opgaver i Hovedbygning.)
 
 Mulighed for at opgaver kan tilknyttes info om: Extern eller Intern opgave, således brugeren kan se om opgaven skal udføres af fagfolk. 
 
