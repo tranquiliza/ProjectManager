@@ -10,14 +10,6 @@
 </head>
 <body>
     <div class="row">
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-    </div>
-    <div class="row">
         <div class="col-md-8 col-lg-offset-2">
             <asp:Table ID="Table_Tasks" runat="server">
 

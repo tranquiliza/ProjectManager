@@ -1,4 +1,13 @@
-﻿/*To Solve printing colors issue: https://defuse.ca/force-print-background.htm Hopefully it works?!*/
+﻿@media print{
+    body{
+        background: transparent;
+    }
+}
+
+.TableChanges
+{
+    border-collapse:collapse; float:left; margin-right:30px;
+}
 .TableHeaderRow
 {
     height:100px;

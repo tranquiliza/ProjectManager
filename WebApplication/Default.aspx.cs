@@ -66,7 +66,7 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell7.CssClass = "vertical-text-table-green vertical-text-table";
 
         TableHeaderCell headerTableCell8 = new TableHeaderCell();
-        headerTableCell8.Text = "<p>Afv. Godk.</p>";
+        headerTableCell8.Text = "<p>Afventer. Godk.</p>";
         //headerTableCell8.Scope = TableHeaderScope.Column;
         headerTableCell8.AbbreviatedText = "Afv. Godk.";
         headerTableCell8.CssClass = "vertical-text-table-red vertical-text-table";
