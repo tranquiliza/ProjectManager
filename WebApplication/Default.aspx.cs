@@ -19,8 +19,8 @@ public partial class _Default : System.Web.UI.Page
     {
         TableHeaderRow HeaderRow = new TableHeaderRow();
         HeaderRow.CssClass = "TableHeaderRow";
-        // Create TableCell objects to contain 
-        // the text for the header.
+        // Create TableCell objects to contain
+
         TableHeaderCell headerTableCell1 = new TableHeaderCell();
         headerTableCell1.Text = "<h1>Opgave</h1>";
         //headerTableCell1.Scope = TableHeaderScope.Column;
@@ -54,13 +54,13 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell5.CssClass = "vertical-text-table-purple vertical-text-table";
 
         TableHeaderCell headerTableCell6 = new TableHeaderCell();
-        headerTableCell6.Text = "<p style='font-size:18px';>Standby</p>";
+        headerTableCell6.Text = "<p>Standby</p>";
         //headerTableCell6.Scope = TableHeaderScope.Column;
         headerTableCell6.AbbreviatedText = "Stand";
         headerTableCell6.CssClass = "vertical-text-table-yellow vertical-text-table";
 
         TableHeaderCell headerTableCell7 = new TableHeaderCell();
-        headerTableCell7.Text = "<p style='font-size:18px';>Færdig</p>";
+        headerTableCell7.Text = "<p>Færdig</p>";
         //headerTableCell7.Scope = TableHeaderScope.Column;
         headerTableCell7.AbbreviatedText = "Færdig";
         headerTableCell7.CssClass = "vertical-text-table-green vertical-text-table";

@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProjectManagerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="Department_ID" />
+          </Key>
+          <Property Name="Department_ID" Type="int" Nullable="false" />
+          <Property Name="Department_Name" Type="nchar" MaxLength="40" />
+        </EntityType>
+        <EntityType Name="Task_Status">
+          <Key>
+            <PropertyRef Name="Status_ID" />
+          </Key>
+          <Property Name="Status_ID" Type="int" Nullable="false" />
+          <Property Name="Status_Name" Type="nchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="Task_ID" />
+          </Key>
+          <Property Name="Task_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Task_Name" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Task_Action" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Task_Start" Type="date" />
+          <Property Name="Task_Deadline" Type="date" />
+          <Property Name="Task_Staff" Type="nchar" MaxLength="100" />
+          <Property Name="Task_Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Task_IsPriority" Type="bit" />
+          <Property Name="Task_IsBigTask" Type="bit" />
+          <Property Name="Task_Department" Type="int" />
+          <Property Name="Task_Status" Type="int" />
+          <Property Name="Task_MainTask" Type="int" />
+        </EntityType>
+        <Association Name="FK__Tasks__Task_Depa__1DE57479">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="Department_ID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="Task_Department" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Tasks__Task_Main__1FCDBCEB">
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1" />
+          <End Role="Tasks1" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="Task_ID" />
+            </Principal>
+            <Dependent Role="Tasks1">
+              <PropertyRef Name="Task_MainTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Tasks__Task_Stat__1ED998B2">
+          <End Role="Task_Status" Type="Self.Task_Status" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task_Status">
+              <PropertyRef Name="Status_ID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="Task_Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectManagerModelStoreContainer">
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task_Status" EntityType="Self.Task_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Tasks__Task_Depa__1DE57479" Association="Self.FK__Tasks__Task_Depa__1DE57479">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__Task_Main__1FCDBCEB" Association="Self.FK__Tasks__Task_Main__1FCDBCEB">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="Tasks1" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__Task_Stat__1ED998B2" Association="Self.FK__Tasks__Task_Stat__1ED998B2">
+            <End Role="Task_Status" EntitySet="Task_Status" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProjectManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="Department_ID" />
+          </Key>
+          <Property Name="Department_ID" Type="Int32" Nullable="false" />
+          <Property Name="Department_Name" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Departments" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="Task_Status">
+          <Key>
+            <PropertyRef Name="Status_ID" />
+          </Key>
+          <Property Name="Status_ID" Type="Int32" Nullable="false" />
+          <Property Name="Status_Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Task_Status" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="Task_ID" />
+          </Key>
+          <Property Name="Task_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Task_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Task_Action" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Task_Start" Type="DateTime" Precision="0" />
+          <Property Name="Task_Deadline" Type="DateTime" Precision="0" />
+          <Property Name="Task_Staff" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Task_Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Task_IsPriority" Type="Boolean" />
+          <Property Name="Task_IsBigTask" Type="Boolean" />
+          <Property Name="Task_Department" Type="Int32" />
+          <Property Name="Task_Status" Type="Int32" />
+          <Property Name="Task_MainTask" Type="Int32" />
+          <NavigationProperty Name="Departments" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Tasks" ToRole="Departments" />
+          <NavigationProperty Name="Task_Status1" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Tasks" ToRole="Task_Status" />
+          <NavigationProperty Name="Tasks1" Relationship="Self.FK__Tasks__Task_Main__1FCDBCEB" FromRole="Tasks" ToRole="Tasks1" />
+          <NavigationProperty Name="Tasks2" Relationship="Self.FK__Tasks__Task_Main__1FCDBCEB" FromRole="Tasks1" ToRole="Tasks" />
+        </EntityType>
+        <Association Name="FK__Tasks__Task_Depa__1DE57479">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="Department_ID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="Task_Department" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Tasks__Task_Stat__1ED998B2">
+          <End Role="Task_Status" Type="Self.Task_Status" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task_Status">
+              <PropertyRef Name="Status_ID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="Task_Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Tasks__Task_Main__1FCDBCEB">
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1" />
+          <End Role="Tasks1" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tasks">
+              <PropertyRef Name="Task_ID" />
+            </Principal>
+            <Dependent Role="Tasks1">
+              <PropertyRef Name="Task_MainTask" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectManagerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departments" EntityType="Self.Departments" />
+          <EntitySet Name="Task_Status" EntityType="Self.Task_Status" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" />
+          <AssociationSet Name="FK__Tasks__Task_Depa__1DE57479" Association="Self.FK__Tasks__Task_Depa__1DE57479">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__Task_Stat__1ED998B2" Association="Self.FK__Tasks__Task_Stat__1ED998B2">
+            <End Role="Task_Status" EntitySet="Task_Status" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__Task_Main__1FCDBCEB" Association="Self.FK__Tasks__Task_Main__1FCDBCEB">
+            <End Role="Tasks" EntitySet="Tasks" />
+            <End Role="Tasks1" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProjectManagerModelStoreContainer" CdmEntityContainer="ProjectManagerEntities">
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="ProjectManagerModel.Departments">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="Department_ID" ColumnName="Department_ID" />
+                <ScalarProperty Name="Department_Name" ColumnName="Department_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task_Status">
+            <EntityTypeMapping TypeName="ProjectManagerModel.Task_Status">
+              <MappingFragment StoreEntitySet="Task_Status">
+                <ScalarProperty Name="Status_ID" ColumnName="Status_ID" />
+                <ScalarProperty Name="Status_Name" ColumnName="Status_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="ProjectManagerModel.Tasks">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="Task_ID" ColumnName="Task_ID" />
+                <ScalarProperty Name="Task_Name" ColumnName="Task_Name" />
+                <ScalarProperty Name="Task_Action" ColumnName="Task_Action" />
+                <ScalarProperty Name="Task_Start" ColumnName="Task_Start" />
+                <ScalarProperty Name="Task_Deadline" ColumnName="Task_Deadline" />
+                <ScalarProperty Name="Task_Staff" ColumnName="Task_Staff" />
+                <ScalarProperty Name="Task_Price" ColumnName="Task_Price" />
+                <ScalarProperty Name="Task_IsPriority" ColumnName="Task_IsPriority" />
+                <ScalarProperty Name="Task_IsBigTask" ColumnName="Task_IsBigTask" />
+                <ScalarProperty Name="Task_Department" ColumnName="Task_Department" />
+                <ScalarProperty Name="Task_Status" ColumnName="Task_Status" />
+                <ScalarProperty Name="Task_MainTask" ColumnName="Task_MainTask" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
