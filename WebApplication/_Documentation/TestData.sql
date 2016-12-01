@@ -20,8 +20,11 @@ values
 ('Udvikling af Database', 'Systemet skal bruge en Database'				, NULL			, '2016-12-06'	, 'Daniel Olsen'	, 0.00			,0					, 0					, 0					, 0				, 1					),
 ('Udvikling af Frontend', 'Systemet skal bruge en Frontend'				, NULL			, '2016-12-06'	, 'Daniel Olsen'	, 0.00			,0					, 0					, 0					, 2				, 1					),
 ('Udvidelse af Database', 'Der er mulighed for at udvide databasen.'	, NULL			, NULL			, 'Daniel Olsen'	, NULL			,0					, 0					, 0					, 3				, NULL				)
-/*
-('Udvikling af Database', 'Systemet skal bruge en database'				, NULL			, '2016-12-06'	, 'Daniel Olsen'	, 0.00			,0					, 0					, 0					, 0				, 1				),
-('Udvikling af Database', 'Systemet skal bruge en database'				, NULL			, '2016-12-06'	, 'Daniel Olsen'	, 0.00			,0					, 0					, 0					, 0				, 1				)*/
+
 update Tasks set Task_Department = 0 where Task_ID = 1
-update Tasks set Task_IsBigTask = 1 where Task_ID = 1
+update Tasks set Task_IsBigTask = 0 where Task_ID = 1
+update Tasks set Task_MainTask = 1 where Task_ID = 5
+update Tasks set 
+
+update Tasks set Task_Status = 1 where Task_ID = 4
+update Tasks set Task_IsPriority = 0 where Task_ID = 5

@@ -11,8 +11,9 @@ public partial class _Default : System.Web.UI.Page
     {
         //Load the headers
         LoadTableHeaders();
+        LoadPriortyRows(true, true);
         LoadRows();
-        Table_Tasks.CssClass = "table table-bordered";
+        Table_Tasks.CssClass = "table table-bordered TableChanges";
     }
 
     private void LoadTableHeaders()
@@ -89,72 +90,279 @@ public partial class _Default : System.Web.UI.Page
     }
 
 
-    private void LoadRows()
+    private void LoadPriortyRows(bool ShouldLoad = true, bool LoadSubTasks = true)
+    {
+        if (ShouldLoad)
+        {
+            using (var db = new ProjectManagerEntities())
+            {
+                var query = from Inquiry in db.Tasks
+                            where Inquiry.Task_IsPriority == true
+                            orderby Inquiry.Task_Status
+                            select Inquiry;
+
+                foreach (var Task in query)
+                {
+                    TableRow TempRow = new TableRow();
+                    TempRow.BackColor = System.Drawing.Color.OrangeRed;
+
+                    TableCell Cell_TaskName = new TableCell();
+                    Cell_TaskName.Text = Task.Task_Name;
+                    TempRow.Cells.Add(Cell_TaskName);
+
+                    TableCell Cell_TaskAction = new TableCell();
+                    Cell_TaskAction.Text = Task.Task_Action;
+                    TempRow.Cells.Add(Cell_TaskAction);
+
+                    TableCell Cell_TaskStart = new TableCell();
+                    if (Task.Task_Start != null)
+                    {
+                        Cell_TaskStart.Text = Task.Task_Start.ToString();
+                    }
+                    TempRow.Cells.Add(Cell_TaskStart);
+
+                    TableCell Cell_TaskStaff = new TableCell();
+                    Cell_TaskStaff.Text = Task.Task_Staff;
+                    TempRow.Cells.Add(Cell_TaskStaff);
+
+                    TableCell Status0 = new TableCell();
+                    TableCell Status1 = new TableCell();
+                    TableCell Status2 = new TableCell();
+                    TableCell Status3 = new TableCell();
+
+                    switch (Task.Task_Status)
+                    {
+                        case 0:
+                            Status0.BackColor = System.Drawing.Color.Purple;
+                            break;
+                        case 1:
+                            Status1.BackColor = System.Drawing.Color.Yellow;
+                            break;
+                        case 2:
+                            Status2.BackColor = System.Drawing.Color.Green;
+                            break;
+                        case 3:
+                            Status3.BackColor = System.Drawing.Color.Red;
+                            break;
+                        default:
+                            //We should never hit this.
+                            break;
+                    }
+                    TempRow.Cells.Add(Status0);
+                    TempRow.Cells.Add(Status1);
+                    TempRow.Cells.Add(Status2);
+                    TempRow.Cells.Add(Status3);
+
+                    //Finally add the row to the table.
+                    Table_Tasks.Rows.Add(TempRow);
+
+                    if (LoadSubTasks != true)
+                    {
+                        break;
+                    }
+
+                    foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
+                    {
+                        TableRow Row_Subtask = new TableRow();
+                        Row_Subtask.BackColor = System.Drawing.Color.DarkOrange; //Change this later so it's clearly visible it's subtasks!!!!
+
+                        TableCell Cell_SubTaskName = new TableCell();
+                        Cell_SubTaskName.Text = Subtask.Task_Name;
+                        Row_Subtask.Cells.Add(Cell_SubTaskName);
+
+                        TableCell Cell_SubTaskAction = new TableCell();
+                        Cell_SubTaskAction.Text = Subtask.Task_Action;
+                        Row_Subtask.Cells.Add(Cell_SubTaskAction);
+
+                        TableCell Cell_SubTaskStart = new TableCell();
+                        if (Subtask.Task_Start != null)
+                        {
+                            Cell_SubTaskStart.Text = Subtask.Task_Start.ToString();
+                        }
+                        Row_Subtask.Cells.Add(Cell_SubTaskStart);
+
+                        TableCell Cell_SubTaskStaff = new TableCell();
+                        Cell_SubTaskStaff.Text = Subtask.Task_Staff;
+                        Row_Subtask.Cells.Add(Cell_SubTaskStaff);
+
+                        TableCell SubStatus0 = new TableCell();
+                        TableCell SubStatus1 = new TableCell();
+                        TableCell SubStatus2 = new TableCell();
+                        TableCell SubStatus3 = new TableCell();
+
+                        switch (Subtask.Task_Status)
+                        {
+                            case 0:
+                                SubStatus0.BackColor = System.Drawing.Color.Purple;
+                                break;
+                            case 1:
+                                SubStatus1.BackColor = System.Drawing.Color.Yellow;
+                                break;
+                            case 2:
+                                SubStatus2.BackColor = System.Drawing.Color.Green;
+                                break;
+                            case 3:
+                                SubStatus3.BackColor = System.Drawing.Color.Red;
+                                break;
+                            default:
+                                //We should never hit this.
+                                break;
+                        }
+
+                        Row_Subtask.Cells.Add(SubStatus0);
+                        Row_Subtask.Cells.Add(SubStatus1);
+                        Row_Subtask.Cells.Add(SubStatus2);
+                        Row_Subtask.Cells.Add(SubStatus3);
+
+                        //Finally add the row to the table.
+                        Table_Tasks.Rows.Add(Row_Subtask);
+                    }
+                }
+            }
+        }
+    }
+
+    private void LoadRows(bool LoadSubTasks = true)
     {
         using (var db = new ProjectManagerEntities())
         {
             var query = from Inquiry in db.Tasks
+                        where Inquiry.Task_IsPriority == false
+                        && Inquiry.Task_MainTask == null
                         select Inquiry;
 
-            foreach (var item in query)
+            foreach (var Task in query)
             {
-
-                //IF we find a big task, go through all the items again, and find the items that have MainTask with ID = to BigTask?? (Might cause slowdowns)
                 TableRow TempRow = new TableRow();
-
-                if (item.Task_IsBigTask == true)
-                {
-                    TempRow.BackColor = System.Drawing.Color.Orange;
-                }
-                else
-                {
-                    TempRow.BackColor = System.Drawing.Color.Cornsilk;
-                }
+                //TempRow.BackColor = System.Drawing.Color.OrangeRed;
 
                 TableCell Cell_TaskName = new TableCell();
-                Cell_TaskName.Text = item.Task_Name;
+                Cell_TaskName.Text = Task.Task_Name;
                 TempRow.Cells.Add(Cell_TaskName);
 
                 TableCell Cell_TaskAction = new TableCell();
-                Cell_TaskAction.Text = item.Task_Action;
+                Cell_TaskAction.Text = Task.Task_Action;
                 TempRow.Cells.Add(Cell_TaskAction);
 
                 TableCell Cell_TaskStart = new TableCell();
-                if (item.Task_Start != null)
+                if (Task.Task_Start != null)
                 {
-                    Cell_TaskStart.Text = item.Task_Start.ToString();
-                }
-                else
-                {
-                    Cell_TaskStart.Text = "";
+                    Cell_TaskStart.Text = Task.Task_Start.ToString();
                 }
                 TempRow.Cells.Add(Cell_TaskStart);
 
                 TableCell Cell_TaskStaff = new TableCell();
-                Cell_TaskStaff.Text = item.Task_Staff;
+                Cell_TaskStaff.Text = Task.Task_Staff;
                 TempRow.Cells.Add(Cell_TaskStaff);
 
+                TableCell Status0 = new TableCell();
+                TableCell Status1 = new TableCell();
+                TableCell Status2 = new TableCell();
+                TableCell Status3 = new TableCell();
+
+                switch (Task.Task_Status)
+                {
+                    case 0:
+                        Status0.BackColor = System.Drawing.Color.Purple;
+                        break;
+                    case 1:
+                        Status1.BackColor = System.Drawing.Color.Yellow;
+                        break;
+                    case 2:
+                        Status2.BackColor = System.Drawing.Color.Green;
+                        break;
+                    case 3:
+                        Status3.BackColor = System.Drawing.Color.Red;
+                        break;
+                    default:
+                        //We should never hit this.
+                        break;
+                }
+                TempRow.Cells.Add(Status0);
+                TempRow.Cells.Add(Status1);
+                TempRow.Cells.Add(Status2);
+                TempRow.Cells.Add(Status3);
+
+                //Finally add the row to the table.
                 Table_Tasks.Rows.Add(TempRow);
+
+                if (LoadSubTasks != true)
+                {
+                    break;
+                }
+
+                foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
+                {
+                    TableRow Row_Subtask = new TableRow();
+                    Row_Subtask.BackColor = System.Drawing.Color.Wheat; //Change this later so it's clearly visible it's subtasks!!!!
+
+                    TableCell Cell_SubTaskName = new TableCell();
+                    Cell_SubTaskName.Text = Subtask.Task_Name;
+                    Row_Subtask.Cells.Add(Cell_SubTaskName);
+
+                    TableCell Cell_SubTaskAction = new TableCell();
+                    Cell_SubTaskAction.Text = Subtask.Task_Action;
+                    Row_Subtask.Cells.Add(Cell_SubTaskAction);
+
+                    TableCell Cell_SubTaskStart = new TableCell();
+                    if (Subtask.Task_Start != null)
+                    {
+                        Cell_SubTaskStart.Text = Subtask.Task_Start.ToString();
+                    }
+                    Row_Subtask.Cells.Add(Cell_SubTaskStart);
+
+                    TableCell Cell_SubTaskStaff = new TableCell();
+                    Cell_SubTaskStaff.Text = Subtask.Task_Staff;
+                    Row_Subtask.Cells.Add(Cell_SubTaskStaff);
+
+                    TableCell SubStatus0 = new TableCell();
+                    TableCell SubStatus1 = new TableCell();
+                    TableCell SubStatus2 = new TableCell();
+                    TableCell SubStatus3 = new TableCell();
+
+                    switch (Subtask.Task_Status)
+                    {
+                        case 0:
+                            SubStatus0.BackColor = System.Drawing.Color.Purple;
+                            break;
+                        case 1:
+                            SubStatus1.BackColor = System.Drawing.Color.Yellow;
+                            break;
+                        case 2:
+                            SubStatus2.BackColor = System.Drawing.Color.Green;
+                            break;
+                        case 3:
+                            SubStatus3.BackColor = System.Drawing.Color.Red;
+                            break;
+                        default:
+                            //We should never hit this.
+                            break;
+                    }
+
+                    Row_Subtask.Cells.Add(SubStatus0);
+                    Row_Subtask.Cells.Add(SubStatus1);
+                    Row_Subtask.Cells.Add(SubStatus2);
+                    Row_Subtask.Cells.Add(SubStatus3);
+
+                    //Finally add the row to the table.
+                    Table_Tasks.Rows.Add(Row_Subtask);
+                }
             }
-                
-                /*from Inquiry in db.Bestillling
-                       where Inquiry.Bestillingstype.ID == (int)Enums.BestillingsType.Foredrag
-                       && Inquiry.approval == true
-                       && Inquiry.startDato >= DateTime.Now
-                       select Inquiry;*/
         }
-            //This will be where the logic for adding rows to the table will be.
-            //Add rows to the table.
-            //for (int rowNum = 0; rowNum < 100; rowNum++)
-            //{
-            //    TableRow tempRow = new TableRow();
-            //    for (int cellNum = 0; cellNum < 8; cellNum++)
-            //    {
-            //        TableCell tempCell = new TableCell();
-            //        tempCell.Text = String.Format("({0},{1})", rowNum, cellNum);
-            //        tempRow.Cells.Add(tempCell);
-            //    }
-            //    Table_Tasks.Rows.Add(tempRow);
-            //}
+        #region .TestRowCells.
+        //This will be where the logic for adding rows to the table will be.
+        //Add rows to the table.
+        //for (int rowNum = 0; rowNum < 100; rowNum++)
+        //{
+        //    TableRow tempRow = new TableRow();
+        //    for (int cellNum = 0; cellNum < 8; cellNum++)
+        //    {
+        //        TableCell tempCell = new TableCell();
+        //        tempCell.Text = String.Format("({0},{1})", rowNum, cellNum);
+        //        tempRow.Cells.Add(tempCell);
+        //    }
+        //    Table_Tasks.Rows.Add(tempRow);
+        //}
+        #endregion
     }
 }
