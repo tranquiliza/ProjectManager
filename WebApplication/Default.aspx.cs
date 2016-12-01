@@ -11,7 +11,7 @@ public partial class _Default : System.Web.UI.Page
     {
         //Load the headers
         LoadTableHeaders();
-        //LoadRows();
+        LoadRows();
         Table_Tasks.CssClass = "table table-bordered";
     }
 
@@ -91,18 +91,70 @@ public partial class _Default : System.Web.UI.Page
 
     private void LoadRows()
     {
-        //This will be where the logic for adding rows to the table will be.
-        //Add rows to the table.
-        for (int rowNum = 0; rowNum < 100; rowNum++)
+        using (var db = new ProjectManagerEntities())
         {
-            TableRow tempRow = new TableRow();
-            for (int cellNum = 0; cellNum < 8; cellNum++)
+            var query = from Inquiry in db.Tasks
+                        select Inquiry;
+
+            foreach (var item in query)
             {
-                TableCell tempCell = new TableCell();
-                tempCell.Text = String.Format("({0},{1})", rowNum, cellNum);
-                tempRow.Cells.Add(tempCell);
+
+                //IF we find a big task, go through all the items again, and find the items that have MainTask with ID = to BigTask?? (Might cause slowdowns)
+                TableRow TempRow = new TableRow();
+
+                if (item.Task_IsBigTask == true)
+                {
+                    TempRow.BackColor = System.Drawing.Color.Orange;
+                }
+                else
+                {
+                    TempRow.BackColor = System.Drawing.Color.Cornsilk;
+                }
+
+                TableCell Cell_TaskName = new TableCell();
+                Cell_TaskName.Text = item.Task_Name;
+                TempRow.Cells.Add(Cell_TaskName);
+
+                TableCell Cell_TaskAction = new TableCell();
+                Cell_TaskAction.Text = item.Task_Action;
+                TempRow.Cells.Add(Cell_TaskAction);
+
+                TableCell Cell_TaskStart = new TableCell();
+                if (item.Task_Start != null)
+                {
+                    Cell_TaskStart.Text = item.Task_Start.ToString();
+                }
+                else
+                {
+                    Cell_TaskStart.Text = "";
+                }
+                TempRow.Cells.Add(Cell_TaskStart);
+
+                TableCell Cell_TaskStaff = new TableCell();
+                Cell_TaskStaff.Text = item.Task_Staff;
+                TempRow.Cells.Add(Cell_TaskStaff);
+
+                Table_Tasks.Rows.Add(TempRow);
             }
-            Table_Tasks.Rows.Add(tempRow);
+                
+                /*from Inquiry in db.Bestillling
+                       where Inquiry.Bestillingstype.ID == (int)Enums.BestillingsType.Foredrag
+                       && Inquiry.approval == true
+                       && Inquiry.startDato >= DateTime.Now
+                       select Inquiry;*/
         }
+            //This will be where the logic for adding rows to the table will be.
+            //Add rows to the table.
+            //for (int rowNum = 0; rowNum < 100; rowNum++)
+            //{
+            //    TableRow tempRow = new TableRow();
+            //    for (int cellNum = 0; cellNum < 8; cellNum++)
+            //    {
+            //        TableCell tempCell = new TableCell();
+            //        tempCell.Text = String.Format("({0},{1})", rowNum, cellNum);
+            //        tempRow.Cells.Add(tempCell);
+            //    }
+            //    Table_Tasks.Rows.Add(tempRow);
+            //}
     }
 }
