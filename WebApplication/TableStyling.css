@@ -1,7 +1,25 @@
-﻿@media print{
+﻿/*NEED TO FIGURE OUT SOMETHING SO WE CAN PRINT COLORS!*/
+@media print{
     body{
         background: transparent;
     }
+}
+
+.ImportantRow
+{
+    background-color:orangered;
+}
+
+.ImportantSubRow
+{
+    background-color:orange;
+}
+
+.TableButton
+{
+    float:left;
+    height:20px;
+    width:100%;
 }
 
 .TableChanges

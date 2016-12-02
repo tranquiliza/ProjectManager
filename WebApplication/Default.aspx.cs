@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -11,9 +12,35 @@ public partial class _Default : System.Web.UI.Page
     {
         //Load the headers
         LoadTableHeaders();
-        LoadPriortyRows(true, true);
-        LoadRows();
+        LoadPriortyRows(true, true, false);
+        LoadRows(true, false);
         Table_Tasks.CssClass = "table table-bordered TableChanges";
+    }
+
+
+    [WebMethod]
+    public static void UpdateStatus(int ID, int NewStatus) //Example on website uses a string? Not sure why. Person also does manual con string.
+    {
+        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
+        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
+        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
+        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
+
+        //Thinking about it, it's possible to execute injections with this?
+
+        //Insert statement goes here. With Parameters passed.
+        using (var db = new ProjectManagerEntities())
+        {
+            var query = from Inquiry in db.Tasks
+                        where Inquiry.Task_ID == ID
+                        select Inquiry;
+
+            foreach (var Task in query)
+            {
+                Task.Task_Status = NewStatus;
+            }
+            db.SaveChanges();
+        }
     }
 
     private void LoadTableHeaders()
@@ -90,7 +117,7 @@ public partial class _Default : System.Web.UI.Page
     }
 
 
-    private void LoadPriortyRows(bool ShouldLoad = true, bool LoadSubTasks = true)
+    private void LoadPriortyRows(bool ShouldLoad = true, bool LoadSubTasks = true, bool AllowEdits = false)
     {
         if (ShouldLoad)
         {
@@ -104,7 +131,7 @@ public partial class _Default : System.Web.UI.Page
                 foreach (var Task in query)
                 {
                     TableRow TempRow = new TableRow();
-                    TempRow.BackColor = System.Drawing.Color.OrangeRed;
+                    TempRow.CssClass = "ImportantRow";
 
                     TableCell Cell_TaskName = new TableCell();
                     Cell_TaskName.Text = Task.Task_Name;
@@ -129,21 +156,48 @@ public partial class _Default : System.Web.UI.Page
                     TableCell Status1 = new TableCell();
                     TableCell Status2 = new TableCell();
                     TableCell Status3 = new TableCell();
+                    //These tablecells could contain buttons that have methods to update tasks
+
 
                     switch (Task.Task_Status)
                     {
-                        case 0:
+                        case 0: //If task is Started (Igang)
                             Status0.BackColor = System.Drawing.Color.Purple;
+                            if (AllowEdits)
+                            {
+                                Status1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 1 + ")'></button>";
+                                Status2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 2 + ")'></button>";
+                                Status3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 3 + ")'></button>";
+                            }
                             break;
-                        case 1:
+                        case 1: //If task is Standby
                             Status1.BackColor = System.Drawing.Color.Yellow;
+                            if (AllowEdits)
+                            {
+                                Status0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 0 + ")'></button>";
+                                Status2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 2 + ")'></button>";
+                                Status3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 3 + ")'></button>";
+                            }
                             break;
-                        case 2:
+                        case 2: //If task is finished
                             Status2.BackColor = System.Drawing.Color.Green;
+                            if (AllowEdits)
+                            {
+                                Status0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 0 + ")'></button>";
+                                Status1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 1 + ")'></button>";
+                                Status3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 3 + ")'></button>";
+                            }
                             break;
-                        case 3:
+                        case 3://If task is Awaiting Accept.
                             Status3.BackColor = System.Drawing.Color.Red;
+                            if (AllowEdits)
+                            {
+                                Status0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 0 + ")'></button>";
+                                Status1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 1 + ")'></button>";
+                                Status2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 2 + ")'></button>";
+                            }
                             break;
+
                         default:
                             //We should never hit this.
                             break;
@@ -164,10 +218,10 @@ public partial class _Default : System.Web.UI.Page
                     foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
                     {
                         TableRow Row_Subtask = new TableRow();
-                        Row_Subtask.BackColor = System.Drawing.Color.DarkOrange; //Change this later so it's clearly visible it's subtasks!!!!
+                        Row_Subtask.CssClass = "ImportantSubRow";
 
                         TableCell Cell_SubTaskName = new TableCell();
-                        Cell_SubTaskName.Text = Subtask.Task_Name;
+                        Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name;
                         Row_Subtask.Cells.Add(Cell_SubTaskName);
 
                         TableCell Cell_SubTaskAction = new TableCell();
@@ -194,15 +248,39 @@ public partial class _Default : System.Web.UI.Page
                         {
                             case 0:
                                 SubStatus0.BackColor = System.Drawing.Color.Purple;
+                                if (AllowEdits)
+                                {
+                                    SubStatus1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 1 + ")'></button>";
+                                    SubStatus2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 2 + ")'></button>";
+                                    SubStatus3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 3 + ")'></button>";
+                                }
                                 break;
                             case 1:
                                 SubStatus1.BackColor = System.Drawing.Color.Yellow;
+                                if (AllowEdits)
+                                {
+                                    SubStatus0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 0 + ")'></button>";
+                                    SubStatus2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 2 + ")'></button>";
+                                    SubStatus3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 3 + ")'></button>";
+                                }
                                 break;
                             case 2:
                                 SubStatus2.BackColor = System.Drawing.Color.Green;
+                                if (AllowEdits)
+                                {
+                                    SubStatus0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 0 + ")'></button>";
+                                    SubStatus1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 1 + ")'></button>";
+                                    SubStatus3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 3 + ")'></button>";
+                                }
                                 break;
                             case 3:
                                 SubStatus3.BackColor = System.Drawing.Color.Red;
+                                if (AllowEdits)
+                                {
+                                    SubStatus0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 0 + ")'></button>";
+                                    SubStatus1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 1 + ")'></button>";
+                                    SubStatus2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 2 + ")'></button>";
+                                }
                                 break;
                             default:
                                 //We should never hit this.
@@ -222,7 +300,7 @@ public partial class _Default : System.Web.UI.Page
         }
     }
 
-    private void LoadRows(bool LoadSubTasks = true)
+    private void LoadRows(bool LoadSubTasks = true, bool AllowEdits = false)
     {
         using (var db = new ProjectManagerEntities())
         {
@@ -262,18 +340,43 @@ public partial class _Default : System.Web.UI.Page
 
                 switch (Task.Task_Status)
                 {
-                    case 0:
+                    case 0: //If task is Started (Igang)
                         Status0.BackColor = System.Drawing.Color.Purple;
+                        if (AllowEdits)
+                        {
+                            Status1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 1 + ")'></button>";
+                            Status2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 2 + ")'></button>";
+                            Status3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 3 + ")'></button>";
+                        }
                         break;
-                    case 1:
+                    case 1: //If task is Standby
                         Status1.BackColor = System.Drawing.Color.Yellow;
+                        if (AllowEdits)
+                        {
+                            Status0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 0 + ")'></button>";
+                            Status2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 2 + ")'></button>";
+                            Status3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 3 + ")'></button>";
+                        }
                         break;
-                    case 2:
+                    case 2: //If task is finished
                         Status2.BackColor = System.Drawing.Color.Green;
+                        if (AllowEdits)
+                        {
+                            Status0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 0 + ")'></button>";
+                            Status1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 1 + ")'></button>";
+                            Status3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 3 + ")'></button>";
+                        }
                         break;
-                    case 3:
+                    case 3://If task is Awaiting Accept.
                         Status3.BackColor = System.Drawing.Color.Red;
+                        if (AllowEdits)
+                        {
+                            Status0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 0 + ")'></button>";
+                            Status1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 1 + ")'></button>";
+                            Status2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Task.Task_ID + ", " + 2 + ")'></button>";
+                        }
                         break;
+
                     default:
                         //We should never hit this.
                         break;
@@ -297,7 +400,7 @@ public partial class _Default : System.Web.UI.Page
                     Row_Subtask.BackColor = System.Drawing.Color.Wheat; //Change this later so it's clearly visible it's subtasks!!!!
 
                     TableCell Cell_SubTaskName = new TableCell();
-                    Cell_SubTaskName.Text = Subtask.Task_Name;
+                    Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name;
                     Row_Subtask.Cells.Add(Cell_SubTaskName);
 
                     TableCell Cell_SubTaskAction = new TableCell();
@@ -324,15 +427,39 @@ public partial class _Default : System.Web.UI.Page
                     {
                         case 0:
                             SubStatus0.BackColor = System.Drawing.Color.Purple;
+                            if (AllowEdits)
+                            {
+                                SubStatus1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 1 + ")'></button>";
+                                SubStatus2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 2 + ")'></button>";
+                                SubStatus3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 3 + ")'></button>";
+                            }
                             break;
                         case 1:
                             SubStatus1.BackColor = System.Drawing.Color.Yellow;
+                            if (AllowEdits)
+                            {
+                                SubStatus0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 0 + ")'></button>";
+                                SubStatus2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 2 + ")'></button>";
+                                SubStatus3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 3 + ")'></button>";
+                            }
                             break;
                         case 2:
                             SubStatus2.BackColor = System.Drawing.Color.Green;
+                            if (AllowEdits)
+                            {
+                                SubStatus0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 0 + ")'></button>";
+                                SubStatus1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 1 + ")'></button>";
+                                SubStatus3.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 3 + ")'></button>";
+                            }
                             break;
                         case 3:
                             SubStatus3.BackColor = System.Drawing.Color.Red;
+                            if (AllowEdits)
+                            {
+                                SubStatus0.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 0 + ")'></button>";
+                                SubStatus1.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 1 + ")'></button>";
+                                SubStatus2.Text = "<button class='TableButton' onclick='UpdateStatus(" + Subtask.Task_ID + ", " + 2 + ")'></button>";
+                            }
                             break;
                         default:
                             //We should never hit this.

@@ -7,16 +7,26 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="TableStyling.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-</head>
-<body>
-    <div class="row">
-        <div class="col-md-8 col-lg-offset-2">
-            <asp:Table ID="Table_Tasks" runat="server">
+    
+    <script type="text/javascript">
+        function UpdateStatus(TaskID, NewStatus)
+        {
+            PageMethods.UpdateStatus(TaskID, NewStatus);
+        }
+    </script>
 
-            </asp:Table>
-        </div>
-    </div>
+</head>
+
+<body>
     <form id="Form1" runat="server">
+        <asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <div class="row">
+            <div class="col-md-8 col-lg-offset-2">
+                <asp:Table ID="Table_Tasks" runat="server">
+
+                </asp:Table>
+            </div>
+        </div>
     </form>
 </body>
 </html>

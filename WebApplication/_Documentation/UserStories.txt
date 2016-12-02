@@ -51,3 +51,5 @@ For at løse disse problemer skal jeg bruge:
 Det vil være en fordel at sørge for at diverse backend koder kan genbruges til App, eller eventuelt skrivebords application.
 
 En virkende prototype ønskes klar før: Tirsdag den 6. December, da dette er dagen for besøget på virksomheden.
+
+*Browsers kan ikke udprinte backgrounds farver (CSS Values), skal find en løsning således der kan printes i farver.
