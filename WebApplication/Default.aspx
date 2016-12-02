@@ -8,13 +8,8 @@
     <link rel="stylesheet" type="text/css" href="TableStyling.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     
-    <script type="text/javascript">
-        function UpdateStatus(TaskID, NewStatus)
-        {
-            PageMethods.UpdateStatus(TaskID, NewStatus);
-        }
-    </script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="Scripts/PageMethods.js"></script>
 </head>
 
 <body>
@@ -22,11 +17,16 @@
         <asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <div class="row">
             <div class="col-md-8 col-lg-offset-2">
+                <input id="ToggleEditButton" onclick="ToggleTableButtons()" value="Rediger" type="button" />
                 <asp:Table ID="Table_Tasks" runat="server">
 
                 </asp:Table>
             </div>
         </div>
     </form>
+    <script>
+        HideTableButtons();
+        //HideSubTasks();
+    </script>
 </body>
 </html>

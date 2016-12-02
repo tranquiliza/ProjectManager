@@ -15,11 +15,22 @@
     background-color:orange;
 }
 
+.TableButtonToggleSubTask
+{
+    float:left;
+    height:20px;
+    width:100%;
+    /*background-color:transparent;
+    border-color:transparent;*/
+}
+
 .TableButton
 {
     float:left;
     height:20px;
     width:100%;
+    /*background-color:transparent;
+    border-color:transparent;*/
 }
 
 .TableChanges

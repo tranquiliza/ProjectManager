@@ -12,8 +12,10 @@ public partial class _Default : System.Web.UI.Page
     {
         //Load the headers
         LoadTableHeaders();
-        LoadPriortyRows(true, true, false);
-        LoadRows(true, false);
+        LoadPriortyRows(true, true, true);
+        //Possibly make this a feature for JavaScript to handle, as this would allow individual clients to change what they see. (Instead of changing all)
+        //Maybe the same with undertasks?
+        LoadRows(true, true);
         Table_Tasks.CssClass = "table table-bordered TableChanges";
     }
 
@@ -99,6 +101,9 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell8.AbbreviatedText = "Afv. Godk.";
         headerTableCell8.CssClass = "vertical-text-table-red vertical-text-table";
 
+        TableHeaderCell headerTableCell9 = new TableHeaderCell();
+        headerTableCell9.Text = "Test";
+
         // Add the TableHeaderCell objects to the Cells
         // collection of the TableHeaderRow.
         HeaderRow.Cells.Add(headerTableCell1);
@@ -109,7 +114,8 @@ public partial class _Default : System.Web.UI.Page
         HeaderRow.Cells.Add(headerTableCell6);
         HeaderRow.Cells.Add(headerTableCell7);
         HeaderRow.Cells.Add(headerTableCell8);
-        //HeaderRow.Cells.Add(headerTableCell9);
+        //Test Cell
+        HeaderRow.Cells.Add(headerTableCell9);
 
         // Add the TableHeaderRow as the first item 
         // in the Rows collection of the table.
@@ -207,18 +213,26 @@ public partial class _Default : System.Web.UI.Page
                     TempRow.Cells.Add(Status2);
                     TempRow.Cells.Add(Status3);
 
-                    //Finally add the row to the table.
-                    Table_Tasks.Rows.Add(TempRow);
 
                     if (LoadSubTasks != true)
                     {
+                        Table_Tasks.Rows.Add(TempRow);
                         break;
                     }
-
+                    else
+                    {
+                        TableCell Cell_ToggleButton = new TableCell();
+                        Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'</input>";
+                        TempRow.Cells.Add(Cell_ToggleButton);
+                        Table_Tasks.Rows.Add(TempRow);
+                    }
+                    
+                    //Finally add the row to the table.
+                    
                     foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
                     {
                         TableRow Row_Subtask = new TableRow();
-                        Row_Subtask.CssClass = "ImportantSubRow";
+                        Row_Subtask.CssClass = "ImportantSubRow " + "Maintask" + Task.Task_ID;
 
                         TableCell Cell_SubTaskName = new TableCell();
                         Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name;
@@ -387,17 +401,25 @@ public partial class _Default : System.Web.UI.Page
                 TempRow.Cells.Add(Status3);
 
                 //Finally add the row to the table.
-                Table_Tasks.Rows.Add(TempRow);
 
                 if (LoadSubTasks != true)
                 {
+                    Table_Tasks.Rows.Add(TempRow);
                     break;
+                }
+                else
+                {
+                    TableCell Cell_ToggleButton = new TableCell();
+                    Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'>";
+                    TempRow.Cells.Add(Cell_ToggleButton);
+                    Table_Tasks.Rows.Add(TempRow);
                 }
 
                 foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
                 {
                     TableRow Row_Subtask = new TableRow();
                     Row_Subtask.BackColor = System.Drawing.Color.Wheat; //Change this later so it's clearly visible it's subtasks!!!!
+                    Row_Subtask.CssClass = "Maintask" + Task.Task_ID;
 
                     TableCell Cell_SubTaskName = new TableCell();
                     Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name;
