@@ -1,0 +1,19 @@
+﻿Database Expansion:
+	Staff Table: Could include references to possible staff entities. This would make it possible to store information about staff and specify even further if wanted!
+
+Database Improvements:
+	From Iteration 1 -> 2 I want to improve the database to include more details about the tasks. This includes:
+	* Task_CreationDate (When the task was first put into the system.)
+	* Task_CompletionDate (When the task was flagged completed by the user)
+	* Task_ApprovedDate (When the task was approved by the board)
+	- Is it possible to remove the "Task_IsBigTask" variable as this isn't needed with the current setup.
+
+Frontend Improvements: 
+	Images for the vertical cells (Status Cells), to make them more uniform.
+	Notification that the user is in editing mode, to make it more visible that he can interact with the table.
+	Sorting tasks according to deadline. (Closest Deadline ontop) (This is subsort after initial sort, where Tasks are loaded Prio First -> Regular)
+
+	If user is editing, set Session State that user is editing, so when the user clicks buttons and refreshes, we check this var. If Editing, don't hide buttons and make the 
+	Edit toggle button in the "Editing" state!
+
+	Add Submission form for creation of new tasks * THIS IS PRIO BEFORE Thirsday!!!!!

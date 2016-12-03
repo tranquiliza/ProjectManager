@@ -40,13 +40,13 @@ Email Historik på bestemte opgaver der har korrespondance mellem bruger og tilb
 Noter til mig selv:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 For at løse disse problemer skal jeg bruge: 
-* Database (Microsoft SQL). (MySQL)
+* Database (Microsoft SQL).
 	Faget indrages ved at oprette forskellige brugere til databasen, således at det kun er bestemte brugere der kan afgøre om opgaver er færdige, skulle det ønskes. 
 	(Dette indrager sikkerhed af database).
 * Front-End til design af en side hvor disse opgaver kan indsættes nemt, og en anden side, hvor opgaver bliver vist i beskrivet følge.
 	(Kan muligvis slås sammen, skal være overskueligt dog).
 	(Muligvis løst med Javascript?).
-	** Appen kan være en del af front-end. 
+	** Appen kan være en del af front-end. (APP Muligvis ikke nødvendig da dette er en webpage, men kunne laves alligevel).
 * Backend til at gøre brugerens liv nemmere når det kommer til at skulle gøre dette. (ASP).
 Det vil være en fordel at sørge for at diverse backend koder kan genbruges til App, eller eventuelt skrivebords application.
 
