@@ -1,11 +1,16 @@
 ﻿Company Visit Notes:
 	* List of Departments
 
-
-
 Database Improvements:
+	UPDATED TO ITERATION 2!
+	* Intern / Extern value?
+
+	Database Expansion:
+		Staff Table: Could include references to possible staff entities. This would make it possible to store information about staff and specify even further if wanted!
 
 Frontend/Backend Improvements: 
+	Sorting of subtasks. 
+	
 	Images for the vertical cells (Status Cells), to make them more uniform.
 	Notification that the user is in editing mode, to make it more visible that he can interact with the table.
 	Sorting tasks according to deadline. (Closest Deadline ontop) (This is subsort after initial sort, where Tasks are loaded Prio First -> Regular)
@@ -18,5 +23,8 @@ Frontend/Backend Improvements:
 	Some way to edit a existing tasks information (In case a task gets Approved, but now it gets a deadline).
 	Adding more subtasks to a maintask. 
 
-Database Expansion:
-	Staff Table: Could include references to possible staff entities. This would make it possible to store information about staff and specify even further if wanted!
+	Function to expand tasks to see addition information in an extra row? 
+		* These rows are added on load, but hidden by default, sort of like the buttons for editing state.
+
+BUGS:
+	Frontend: Hiding a ROW doesn't work in Chrome (NewTaskInputRow)

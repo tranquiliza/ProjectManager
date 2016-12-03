@@ -8,18 +8,42 @@ using System.Web.Services;
 
 public partial class _Default : System.Web.UI.Page
 {
+    bool AllowEdits = true;
     protected void Page_Load(object sender, EventArgs e)
     {
+        //When we load items from the database on load, but never get rid of them, we allocate memory but never clear it. Possible memory leak on bigger system?
+        Table_Tasks.CssClass = "table table-bordered TableChanges";
         //Load the headers
         LoadTableHeaders();
-        LoadPriortyRows(true, true, true);
         //Possibly make this a feature for JavaScript to handle, as this would allow individual clients to change what they see. (Instead of changing all)
         //Security wise, disabling this will make sure nobody gets access!
         //Maybe the same with undertasks?
-        LoadRows(true, true);
-        Table_Tasks.CssClass = "table table-bordered TableChanges";
+        if (AllowEdits == false)
+        {
+            Controls.Visible = false;
+            RowNewTaskButton.Visible = false;
+            InputRow.Visible = false;
+        }
+        LoadPriortyRows(true, true, AllowEdits);
+        LoadRows(true, AllowEdits);
+        LoadDepartments();
     }
+    
+    public void LoadDepartments()
+    {
+        Input_Task_Department.Items.Clear();
+        Input_Task_Department.Items.Add("Ingen");
+        using (var db = new ProjectManagerEntities())
+        {
+            var query = from Inquiry in db.Departments
+                        select Inquiry;
 
+            foreach (var Department in query)
+            {
+                Input_Task_Department.Items.Add(Department.Department_Name);
+            }
+        }
+    }
 
     [WebMethod]
     public static void UpdateStatus(int ID, int NewStatus) //Example on website uses a string? Not sure why. Person also does manual con string.
@@ -32,10 +56,17 @@ public partial class _Default : System.Web.UI.Page
             var query = from Inquiry in db.Tasks
                         where Inquiry.Task_ID == ID
                         select Inquiry;
-            //If the NewStatus is "Initatied"(0) then set DateOfApproval in the table?
-            //If the NewStatus is "Completed"(2) then set DateOfCompletion in table aswell to System.Datetime.Now? 
+
             foreach (var Task in query)
             {
+                if (NewStatus == 0)
+                {
+                    Task.Task_ApprovedDate = DateTime.Now;
+                }
+                if (NewStatus == 2)
+                {
+                    Task.Task_CompletionDate = DateTime.Now;
+                }
                 Task.Task_Status = NewStatus;
             }
 
@@ -103,7 +134,8 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell8.CssClass = "vertical-text-table-red vertical-text-table";
 
         TableHeaderCell headerTableCell9 = new TableHeaderCell();
-        headerTableCell9.Text = "Test";
+        headerTableCell9.CssClass = "vertical-text-table-default vertical-text-table";
+        headerTableCell9.Text = "<p>Udfold</p>";
 
         // Add the TableHeaderCell objects to the Cells
         // collection of the TableHeaderRow.
@@ -115,7 +147,7 @@ public partial class _Default : System.Web.UI.Page
         HeaderRow.Cells.Add(headerTableCell6);
         HeaderRow.Cells.Add(headerTableCell7);
         HeaderRow.Cells.Add(headerTableCell8);
-        //Test Cell
+        //Collapse undertasks Cell
         HeaderRow.Cells.Add(headerTableCell9);
 
         // Add the TableHeaderRow as the first item 
@@ -150,7 +182,7 @@ public partial class _Default : System.Web.UI.Page
                     TableCell Cell_TaskStart = new TableCell();
                     if (Task.Task_Start != null)
                     {
-                        Cell_TaskStart.Text = Task.Task_Start.ToString();
+                        Cell_TaskStart.Text = Task.Task_Start.Value.ToShortDateString();
                     }
                     TempRow.Cells.Add(Cell_TaskStart);
 
@@ -222,8 +254,11 @@ public partial class _Default : System.Web.UI.Page
                     else
                     {
                         TableCell Cell_ToggleButton = new TableCell();
-                        Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'</input>";
-                        TempRow.Cells.Add(Cell_ToggleButton);
+                        if (Task.Tasks1.Count > 0)
+                        {
+                            Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'</input>";
+                            TempRow.Cells.Add(Cell_ToggleButton);
+                        }
                         Table_Tasks.Rows.Add(TempRow);
                     }
                     
@@ -321,6 +356,7 @@ public partial class _Default : System.Web.UI.Page
             var query = from Inquiry in db.Tasks
                         where Inquiry.Task_IsPriority == false
                         && Inquiry.Task_MainTask == null
+                        orderby Inquiry.Task_Status
                         select Inquiry;
 
             foreach (var Task in query)
@@ -339,7 +375,7 @@ public partial class _Default : System.Web.UI.Page
                 TableCell Cell_TaskStart = new TableCell();
                 if (Task.Task_Start != null)
                 {
-                    Cell_TaskStart.Text = Task.Task_Start.ToString();
+                    Cell_TaskStart.Text = Task.Task_Start.Value.ToShortDateString();
                 }
                 TempRow.Cells.Add(Cell_TaskStart);
 
@@ -410,8 +446,11 @@ public partial class _Default : System.Web.UI.Page
                 else
                 {
                     TableCell Cell_ToggleButton = new TableCell();
-                    Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'>";
-                    TempRow.Cells.Add(Cell_ToggleButton);
+                    if (Task.Tasks1.Count > 0)
+                    {
+                        Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'>";
+                        TempRow.Cells.Add(Cell_ToggleButton);
+                    }
                     Table_Tasks.Rows.Add(TempRow);
                 }
 
@@ -513,5 +552,88 @@ public partial class _Default : System.Web.UI.Page
         //    Table_Tasks.Rows.Add(tempRow);
         //}
         #endregion
+    }
+
+    protected void Input_Task_Insert_Click(object sender, EventArgs e)
+    {
+        Tasks NewTask = new Tasks();
+        NewTask.Task_Name = Input_Task_Name.Value;
+        NewTask.Task_Action = Input_Task_Action.Value;
+
+        DateTime StartDate;
+        DateTime.TryParse(Input_Task_StartDate.Value, out StartDate);
+        if (Input_Task_StartDate.Value == "")
+        {
+            NewTask.Task_Start = null;
+        }
+        else
+        {
+            NewTask.Task_Start = StartDate;
+        }
+
+        DateTime Deadline;
+        DateTime.TryParse(Input_Task_Deadline.Value, out Deadline);
+        if (Input_Task_Deadline.Value == "")
+        {
+            NewTask.Task_Deadline = null;
+        }
+        else
+        {
+            NewTask.Task_Deadline = Deadline;
+        }
+
+        if (Input_Task_Staff.Value == "")
+        {
+            NewTask.Task_Staff = null;
+        }
+        else
+        {
+            NewTask.Task_Staff = Input_Task_Staff.Value;
+        }
+
+        decimal Price;
+        decimal.TryParse(Input_Task_Price.Value, out Price);
+        if (Price == 0)
+        {
+            NewTask.Task_Price = null;
+        }
+        else
+        {
+            NewTask.Task_Price = Price;
+        }
+        
+        NewTask.Task_IsPriority = Input_Task_IsPriority.Checked;
+        NewTask.Task_CreationDate = DateTime.Now;
+        NewTask.Task_CompletionDate = null;
+        NewTask.Task_ApprovedDate = null;
+
+        if (Input_Task_Department.SelectedValue == "Ingen")
+        {
+            NewTask.Task_Department = null;
+        }
+        else
+        {
+            using (var db = new ProjectManagerEntities())
+            {
+                var query = from Inquiry in db.Departments
+                            where Inquiry.Department_Name == Input_Task_Department.SelectedValue
+                            select Inquiry;
+
+                int SelectedDepartmentID = 0; //If it finds no number it will just put it on Dev (I guess that's the easy way of making bug reports)
+                foreach (var Department in query)
+                {
+                    SelectedDepartmentID = Department.Department_ID;
+                }
+                NewTask.Task_Department = SelectedDepartmentID;
+            }
+        }
+        NewTask.Task_Status = 3;
+        
+        using (var db = new ProjectManagerEntities())
+        {
+            db.Tasks.Add(NewTask);
+            db.SaveChanges();
+        }
+        Response.Redirect(Request.RawUrl);
     }
 }
