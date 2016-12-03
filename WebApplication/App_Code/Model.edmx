@@ -31,10 +31,12 @@
           <Property Name="Task_Staff" Type="nchar" MaxLength="100" />
           <Property Name="Task_Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="bit" />
-          <Property Name="Task_IsBigTask" Type="bit" />
           <Property Name="Task_Department" Type="int" />
           <Property Name="Task_Status" Type="int" />
           <Property Name="Task_MainTask" Type="int" />
+          <Property Name="Task_CreationDate" Type="date" />
+          <Property Name="Task_CompletionDate" Type="date" />
+          <Property Name="Task_ApprovedDate" Type="date" />
         </EntityType>
         <Association Name="FK__Tasks__Task_Depa__1DE57479">
           <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
@@ -122,10 +124,12 @@
           <Property Name="Task_Staff" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="Task_Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="Boolean" />
-          <Property Name="Task_IsBigTask" Type="Boolean" />
           <Property Name="Task_Department" Type="Int32" />
           <Property Name="Task_Status" Type="Int32" />
           <Property Name="Task_MainTask" Type="Int32" />
+          <Property Name="Task_CreationDate" Type="DateTime" Precision="0" />
+          <Property Name="Task_CompletionDate" Type="DateTime" Precision="0" />
+          <Property Name="Task_ApprovedDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Departments" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Tasks" ToRole="Departments" />
           <NavigationProperty Name="Task_Status1" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Tasks" ToRole="Task_Status" />
           <NavigationProperty Name="Tasks1" Relationship="Self.FK__Tasks__Task_Main__1FCDBCEB" FromRole="Tasks" ToRole="Tasks1" />
@@ -217,10 +221,12 @@
                 <ScalarProperty Name="Task_Staff" ColumnName="Task_Staff" />
                 <ScalarProperty Name="Task_Price" ColumnName="Task_Price" />
                 <ScalarProperty Name="Task_IsPriority" ColumnName="Task_IsPriority" />
-                <ScalarProperty Name="Task_IsBigTask" ColumnName="Task_IsBigTask" />
                 <ScalarProperty Name="Task_Department" ColumnName="Task_Department" />
                 <ScalarProperty Name="Task_Status" ColumnName="Task_Status" />
                 <ScalarProperty Name="Task_MainTask" ColumnName="Task_MainTask" />
+                <ScalarProperty Name="Task_CreationDate" ColumnName="Task_CreationDate" />
+                <ScalarProperty Name="Task_CompletionDate" ColumnName="Task_CompletionDate" />
+                <ScalarProperty Name="Task_ApprovedDate" ColumnName="Task_ApprovedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

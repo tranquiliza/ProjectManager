@@ -56,10 +56,12 @@ public partial class Tasks
     public string Task_Staff { get; set; }
     public Nullable<decimal> Task_Price { get; set; }
     public Nullable<bool> Task_IsPriority { get; set; }
-    public Nullable<bool> Task_IsBigTask { get; set; }
     public Nullable<int> Task_Department { get; set; }
     public Nullable<int> Task_Status { get; set; }
     public Nullable<int> Task_MainTask { get; set; }
+    public Nullable<System.DateTime> Task_CreationDate { get; set; }
+    public Nullable<System.DateTime> Task_CompletionDate { get; set; }
+    public Nullable<System.DateTime> Task_ApprovedDate { get; set; }
 
     public virtual Departments Departments { get; set; }
     public virtual Task_Status Task_Status1 { get; set; }

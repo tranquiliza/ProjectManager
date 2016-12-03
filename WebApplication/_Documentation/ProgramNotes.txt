@@ -4,11 +4,6 @@
 
 
 Database Improvements:
-	From Iteration 1 -> 2 I want to improve the database to include more details about the tasks. This includes:
-	* Task_CreationDate (When the task was first put into the system.)
-	* Task_CompletionDate (When the task was flagged completed by the user)
-	* Task_ApprovedDate (When the task was approved by the board)
-	- Is it possible to remove the "Task_IsBigTask" variable as this isn't needed with the current setup.
 
 Frontend/Backend Improvements: 
 	Images for the vertical cells (Status Cells), to make them more uniform.
