@@ -22,7 +22,9 @@ Create table Tasks
 	Task_Staff nchar(100) NULL,
 	Task_Price decimal(18,2) NULL,
 	Task_IsPriority bit NULL,
-	Task_IsBigTask bit NULL,
+	Task_CreationDate date NULL,
+	Task_CompletionDate date NULL,
+	Task_ApprovedDate date NULL,
 	Task_Department int Foreign Key (Task_Department) References Departments(Department_ID) NULL,
 	Task_Status int Foreign Key (Task_Status) References Task_Status(Status_ID) NULL,
 	Task_MainTask int Foreign Key (Task_MainTask) References Tasks(Task_ID) NULL
