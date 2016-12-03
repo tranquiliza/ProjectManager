@@ -1,5 +1,7 @@
-﻿Database Expansion:
-	Staff Table: Could include references to possible staff entities. This would make it possible to store information about staff and specify even further if wanted!
+﻿Company Visit Notes:
+	* List of Departments
+
+
 
 Database Improvements:
 	From Iteration 1 -> 2 I want to improve the database to include more details about the tasks. This includes:
@@ -8,7 +10,7 @@ Database Improvements:
 	* Task_ApprovedDate (When the task was approved by the board)
 	- Is it possible to remove the "Task_IsBigTask" variable as this isn't needed with the current setup.
 
-Frontend Improvements: 
+Frontend/Backend Improvements: 
 	Images for the vertical cells (Status Cells), to make them more uniform.
 	Notification that the user is in editing mode, to make it more visible that he can interact with the table.
 	Sorting tasks according to deadline. (Closest Deadline ontop) (This is subsort after initial sort, where Tasks are loaded Prio First -> Regular)
@@ -17,3 +19,9 @@ Frontend Improvements:
 	Edit toggle button in the "Editing" state!
 
 	Add Submission form for creation of new tasks * THIS IS PRIO BEFORE Thirsday!!!!!
+
+	Some way to edit a existing tasks information (In case a task gets Approved, but now it gets a deadline).
+	Adding more subtasks to a maintask. 
+
+Database Expansion:
+	Staff Table: Could include references to possible staff entities. This would make it possible to store information about staff and specify even further if wanted!
