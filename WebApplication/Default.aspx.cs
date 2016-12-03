@@ -14,6 +14,7 @@ public partial class _Default : System.Web.UI.Page
         LoadTableHeaders();
         LoadPriortyRows(true, true, true);
         //Possibly make this a feature for JavaScript to handle, as this would allow individual clients to change what they see. (Instead of changing all)
+        //Security wise, disabling this will make sure nobody gets access!
         //Maybe the same with undertasks?
         LoadRows(true, true);
         Table_Tasks.CssClass = "table table-bordered TableChanges";
@@ -24,23 +25,22 @@ public partial class _Default : System.Web.UI.Page
     public static void UpdateStatus(int ID, int NewStatus) //Example on website uses a string? Not sure why. Person also does manual con string.
     {
         //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
-        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
-        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
-        //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
-
         //Thinking about it, it's possible to execute injections with this?
-
-        //Insert statement goes here. With Parameters passed.
+        
         using (var db = new ProjectManagerEntities())
         {
             var query = from Inquiry in db.Tasks
                         where Inquiry.Task_ID == ID
                         select Inquiry;
-
+            //If the NewStatus is "Initatied"(0) then set DateOfApproval in the table?
+            //If the NewStatus is "Completed"(2) then set DateOfCompletion in table aswell to System.Datetime.Now? 
             foreach (var Task in query)
             {
                 Task.Task_Status = NewStatus;
             }
+
+            //Possible connect this so it only savechanges when user clicks the buttons, 
+            //requires redesign of all buttons though to make them inputs to aboid page refresh on click.
             db.SaveChanges();
         }
     }
@@ -76,6 +76,7 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell4.CssClass = "TableHeaderCellRow4";
 
 
+        //To make them all the same, make some images to put in, instead of the text to make it the same size!
         //Vertial Coloumns
         TableHeaderCell headerTableCell5 = new TableHeaderCell();
         headerTableCell5.Text = "<p>Igang</p>";
@@ -121,8 +122,7 @@ public partial class _Default : System.Web.UI.Page
         // in the Rows collection of the table.
         Table_Tasks.Rows.AddAt(0, HeaderRow);
     }
-
-
+    
     private void LoadPriortyRows(bool ShouldLoad = true, bool LoadSubTasks = true, bool AllowEdits = false)
     {
         if (ShouldLoad)
