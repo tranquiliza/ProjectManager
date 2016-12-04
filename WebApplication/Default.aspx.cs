@@ -26,7 +26,10 @@ public partial class _Default : System.Web.UI.Page
         }
         LoadPriortyRows(true, true, AllowEdits);
         LoadRows(true, AllowEdits);
-        LoadDepartments();
+        if (!Page.IsPostBack)
+        {
+            LoadDepartments();
+        }
     }
     
     public void LoadDepartments()
@@ -110,32 +113,28 @@ public partial class _Default : System.Web.UI.Page
         //To make them all the same, make some images to put in, instead of the text to make it the same size!
         //Vertial Coloumns
         TableHeaderCell headerTableCell5 = new TableHeaderCell();
-        headerTableCell5.Text = "<p>Igang</p>";
-        //headerTableCell5.Scope = TableHeaderScope.Column;
-        headerTableCell5.AbbreviatedText = "Igang";
-        headerTableCell5.CssClass = "vertical-text-table-purple vertical-text-table";
+        headerTableCell5.Text = "<img src='Images/Igang.png' />";
+        headerTableCell5.CssClass = "vertical-text-table";
+        //headerTableCell5.CssClass = "vertical-text-table-purple vertical-text-table";
 
         TableHeaderCell headerTableCell6 = new TableHeaderCell();
-        headerTableCell6.Text = "<p>Standby</p>";
-        //headerTableCell6.Scope = TableHeaderScope.Column;
-        headerTableCell6.AbbreviatedText = "Stand";
-        headerTableCell6.CssClass = "vertical-text-table-yellow vertical-text-table";
+        headerTableCell6.Text = "<img src='Images/Stanby.png' />";
+        headerTableCell6.CssClass = "vertical-text-table";
+        //headerTableCell6.CssClass = "vertical-text-table-yellow vertical-text-table";
 
         TableHeaderCell headerTableCell7 = new TableHeaderCell();
-        headerTableCell7.Text = "<p>Færdig</p>";
-        //headerTableCell7.Scope = TableHeaderScope.Column;
-        headerTableCell7.AbbreviatedText = "Færdig";
-        headerTableCell7.CssClass = "vertical-text-table-green vertical-text-table";
+        headerTableCell7.Text = "<img src='Images/Færdig.png' />";
+        headerTableCell7.CssClass = "vertical-text-table";
+        //headerTableCell7.CssClass = "vertical-text-table-green vertical-text-table";
 
         TableHeaderCell headerTableCell8 = new TableHeaderCell();
-        headerTableCell8.Text = "<p>Afventer. Godk.</p>";
-        //headerTableCell8.Scope = TableHeaderScope.Column;
-        headerTableCell8.AbbreviatedText = "Afv. Godk.";
-        headerTableCell8.CssClass = "vertical-text-table-red vertical-text-table";
+        headerTableCell8.Text = "<img src='Images/AfventerGodk.png' />";
+        headerTableCell8.CssClass = "vertical-text-table";
+        //headerTableCell8.CssClass = "vertical-text-table-red vertical-text-table";
 
         TableHeaderCell headerTableCell9 = new TableHeaderCell();
-        headerTableCell9.CssClass = "vertical-text-table-default vertical-text-table";
-        headerTableCell9.Text = "<p>Udfold</p>";
+        headerTableCell9.Text = "<img src='Images/TemplateText.png' />";
+        headerTableCell9.CssClass = "vertical-text-table";
 
         // Add the TableHeaderCell objects to the Cells
         // collection of the TableHeaderRow.

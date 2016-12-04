@@ -31,13 +31,13 @@
                 </asp:Table>
             </div>
         </div>
-
         <!--Row for some table controls i suppose.-->
         <div runat="server" class="row" id="RowNewTaskButton">
             <div style="align-content:center" class="col-md-8 col-md-offset-2">
                 <input class="btn btn-info" id="ToggleNewTasksButton" onclick="ToggleNewTaskRow()" value="Opret Ny Opgave" type="button" />
             </div>
         </div>
+
         <!--INPUT FORM STARTS HERE: THIS IS FOR MAKING NEW TASKS!-->
         <div class="row">
             <div runat="server" id="InputRow">
@@ -49,7 +49,8 @@
                     </div>
                     <div class="form-group">
                         <label for="Input_Task_Action">Action</label>
-                        <textarea id="Input_Task_Action" class="form-control" rows="10" placeholder="KæmpeSTOR opgavebeskrivelse her!" runat="server"></textarea>
+                        <textarea maxlength="1000" onkeyup="CountChar(this)" id="Input_Task_Action" class="form-control max" rows="9" placeholder="KæmpeSTOR opgavebeskrivelse her!" runat="server"></textarea>
+                        <label id="CharCounter">1000</label>
                     </div>
                     <asp:Button CssClass="btn btn-info" ID="Input_Task_Insert" runat="server" Text="Gem" OnClick="Input_Task_Insert_Click" />
                 </div>
