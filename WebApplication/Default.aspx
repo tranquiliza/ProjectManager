@@ -45,7 +45,7 @@
                 <div class="col-md-6 col-md-offset-2">
                     <div class="form-group">
                         <label for="Input_Task_Name">Opgave Navn</label>
-                        <input type="text" class="form-control" id="Input_Task_Name" placeholder="Reperation i køkken" runat="server" />
+                        <input type="text" maxlength="200" class="form-control" id="Input_Task_Name" placeholder="Reperation i køkken" runat="server" />
                     </div>
                     <div class="form-group">
                         <label for="Input_Task_Action">Action</label>
@@ -53,6 +53,7 @@
                         <label id="CharCounter">1000</label>
                     </div>
                     <asp:Button CssClass="btn btn-info" ID="Input_Task_Insert" runat="server" Text="Gem" OnClick="Input_Task_Insert_Click" />
+                    <asp:Button CssClass="btn btn-info" ID="Input_Task_Update" runat="server" Text="Gem" OnClick="" />
                 </div>
                 <!--Right column, smaller one!-->
                 <div class="col-md-2">
@@ -66,7 +67,7 @@
                     </div>
                     <div class="form-group">
                         <label for="DropDownList1">Personale</label>
-                        <input id="Input_Task_Staff" type="text" class="form-control" runat="server" />
+                        <input id="Input_Task_Staff" maxlength="200" type="text" class="form-control" runat="server" />
                     </div>
                     <div class="form-group">
                         <label for="Input_Task_Department">Afdeling</label>
@@ -90,6 +91,7 @@
         HideTableButtons();
         HideNewTaskRow();
         HideSubTasks();
+        HideMoreInfoRows();
     </script>
 </body>
 </html>

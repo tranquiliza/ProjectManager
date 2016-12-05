@@ -9,6 +9,8 @@ using System.Web.Services;
 public partial class _Default : System.Web.UI.Page
 {
     bool AllowEdits = true;
+    private List<string> DepartmentIndex;
+    //At some point we should make this default to false, and set it true upon a login for security reasons.
     protected void Page_Load(object sender, EventArgs e)
     {
         //When we load items from the database on load, but never get rid of them, we allocate memory but never clear it. Possible memory leak on bigger system?
@@ -24,18 +26,19 @@ public partial class _Default : System.Web.UI.Page
             RowNewTaskButton.Visible = false;
             InputRow.Visible = false;
         }
-        LoadPriortyRows(true, true, AllowEdits);
-        LoadRows(true, AllowEdits);
         if (!Page.IsPostBack)
         {
-            LoadDepartments();
         }
+        LoadDepartments();
+        LoadPriortyRows(true, true, AllowEdits);
+        LoadRows(true, AllowEdits);
     }
     
     public void LoadDepartments()
     {
         Input_Task_Department.Items.Clear();
         Input_Task_Department.Items.Add("Ingen");
+        DepartmentIndex = new List<string>();
         using (var db = new ProjectManagerEntities())
         {
             var query = from Inquiry in db.Departments
@@ -44,12 +47,13 @@ public partial class _Default : System.Web.UI.Page
             foreach (var Department in query)
             {
                 Input_Task_Department.Items.Add(Department.Department_Name);
+                DepartmentIndex.Add(Department.Department_Name);
             }
         }
     }
 
     [WebMethod]
-    public static void UpdateStatus(int ID, int NewStatus) //Example on website uses a string? Not sure why. Person also does manual con string.
+    public static void UpdateStatus(int ID, int NewStatus)
     {
         //THIS IS POSSIBLY STUPIDLY DANGEROUS AND EASY TO ABUSE!!
         //Thinking about it, it's possible to execute injections with this?
@@ -62,9 +66,13 @@ public partial class _Default : System.Web.UI.Page
 
             foreach (var Task in query)
             {
-                if (NewStatus == 0)
+                if (NewStatus != 3 && Task.Task_Status == 3) //Only if current state is 3. We only approve it when it's moved from unapproved -> Approved
                 {
                     Task.Task_ApprovedDate = DateTime.Now;
+                }
+                if (NewStatus == 3) //If we set task into Unapproved, the Approval date should be null.
+                {
+                    Task.Task_ApprovedDate = null;
                 }
                 if (NewStatus == 2)
                 {
@@ -85,29 +93,38 @@ public partial class _Default : System.Web.UI.Page
         HeaderRow.CssClass = "TableHeaderRow";
         // Create TableCell objects to contain
 
+        TableHeaderCell headerTableCell0 = new TableHeaderCell();
+        headerTableCell0.Text = "<img src='Images/Udfold.png' />";
+        headerTableCell0.CssClass = "vertical-text-table";
+        HeaderRow.Cells.Add(headerTableCell0);
+
         TableHeaderCell headerTableCell1 = new TableHeaderCell();
         headerTableCell1.Text = "<h1>Opgave</h1>";
         //headerTableCell1.Scope = TableHeaderScope.Column;
         headerTableCell1.AbbreviatedText = "Opgave";
         headerTableCell1.CssClass = "TableHeaderCellRow1";
+        HeaderRow.Cells.Add(headerTableCell1);
 
         TableHeaderCell headerTableCell2 = new TableHeaderCell();
         headerTableCell2.Text = "<h1>Action</h1>";
         //headerTableCell2.Scope = TableHeaderScope.Column;
         headerTableCell2.AbbreviatedText = "Action";
         headerTableCell2.CssClass = "TableHeaderCellRow2";
+        HeaderRow.Cells.Add(headerTableCell2);
 
         TableHeaderCell headerTableCell3 = new TableHeaderCell();
         headerTableCell3.Text = "<h1>Forventet <br /> Start</h1>";
         //headerTableCell3.Scope = TableHeaderScope.Column;
         headerTableCell3.AbbreviatedText = "Start";
         headerTableCell3.CssClass = "TableHeaderCellRow3";
+        HeaderRow.Cells.Add(headerTableCell3);
 
         TableHeaderCell headerTableCell4 = new TableHeaderCell();
         headerTableCell4.Text = "<h1>Personale</h1>";
         //headerTableCell4.Scope = TableHeaderScope.Column;
         headerTableCell4.AbbreviatedText = "Personale";
         headerTableCell4.CssClass = "TableHeaderCellRow4";
+        HeaderRow.Cells.Add(headerTableCell4);
 
 
         //To make them all the same, make some images to put in, instead of the text to make it the same size!
@@ -116,38 +133,32 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell5.Text = "<img src='Images/Igang.png' />";
         headerTableCell5.CssClass = "vertical-text-table";
         //headerTableCell5.CssClass = "vertical-text-table-purple vertical-text-table";
+        HeaderRow.Cells.Add(headerTableCell5);
 
         TableHeaderCell headerTableCell6 = new TableHeaderCell();
         headerTableCell6.Text = "<img src='Images/Stanby.png' />";
         headerTableCell6.CssClass = "vertical-text-table";
         //headerTableCell6.CssClass = "vertical-text-table-yellow vertical-text-table";
+        HeaderRow.Cells.Add(headerTableCell6);
 
         TableHeaderCell headerTableCell7 = new TableHeaderCell();
         headerTableCell7.Text = "<img src='Images/Færdig.png' />";
         headerTableCell7.CssClass = "vertical-text-table";
         //headerTableCell7.CssClass = "vertical-text-table-green vertical-text-table";
+        HeaderRow.Cells.Add(headerTableCell7);
 
         TableHeaderCell headerTableCell8 = new TableHeaderCell();
         headerTableCell8.Text = "<img src='Images/AfventerGodk.png' />";
         headerTableCell8.CssClass = "vertical-text-table";
         //headerTableCell8.CssClass = "vertical-text-table-red vertical-text-table";
-
-        TableHeaderCell headerTableCell9 = new TableHeaderCell();
-        headerTableCell9.Text = "<img src='Images/TemplateText.png' />";
-        headerTableCell9.CssClass = "vertical-text-table";
-
-        // Add the TableHeaderCell objects to the Cells
-        // collection of the TableHeaderRow.
-        HeaderRow.Cells.Add(headerTableCell1);
-        HeaderRow.Cells.Add(headerTableCell2);
-        HeaderRow.Cells.Add(headerTableCell3);
-        HeaderRow.Cells.Add(headerTableCell4);
-        HeaderRow.Cells.Add(headerTableCell5);
-        HeaderRow.Cells.Add(headerTableCell6);
-        HeaderRow.Cells.Add(headerTableCell7);
         HeaderRow.Cells.Add(headerTableCell8);
-        //Collapse undertasks Cell
+        
+        TableHeaderCell headerTableCell9 = new TableHeaderCell();
+        headerTableCell9.Text = "<img src='Images/Udfold.png' />";
+        headerTableCell9.CssClass = "vertical-text-table";
         HeaderRow.Cells.Add(headerTableCell9);
+
+
 
         // Add the TableHeaderRow as the first item 
         // in the Rows collection of the table.
@@ -170,6 +181,10 @@ public partial class _Default : System.Web.UI.Page
                     TableRow TempRow = new TableRow();
                     TempRow.CssClass = "ImportantRow";
 
+                    TableCell Cell_MoreInfoButton = new TableCell();
+                    Cell_MoreInfoButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Task.Task_ID + ")'</input>"; //FunctionCall(ToggleMoreInfo(#));
+                    TempRow.Cells.Add(Cell_MoreInfoButton);
+                    
                     TableCell Cell_TaskName = new TableCell();
                     Cell_TaskName.Text = Task.Task_Name;
                     TempRow.Cells.Add(Cell_TaskName);
@@ -244,13 +259,57 @@ public partial class _Default : System.Web.UI.Page
                     TempRow.Cells.Add(Status2);
                     TempRow.Cells.Add(Status3);
 
+                    //More info Row:
+                    TableRow MoreInfoRow = new TableRow();
+                    MoreInfoRow.CssClass = "HiddenInfoRow"; //We use the class to hide all on load once document is loaded. 
+                    MoreInfoRow.ID = "TaskInfo" + Task.Task_ID;
 
-                    if (LoadSubTasks != true)
+                    TableCell FillerCell = new TableCell(); //Button for EDIT TASK??
+                    MoreInfoRow.Cells.Add(FillerCell);
+
+                    TableCell MoreInfoCell = new TableCell();
+                    MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                    MoreInfoRow.Cells.Add(MoreInfoCell);
+
+                    TableCell MoreInfoCell2 = new TableCell();
+                    if (Task.Task_Price != null)
+                    {
+                        MoreInfoCell2.Text += "Pris: " + Task.Task_Price + " kr.<br />";
+                    }
+                    if (Task.Task_Department != null)
+                    {
+                        MoreInfoCell2.Text += "Afdeling:  " + DepartmentIndex[Task.Task_Department.Value];
+                    }
+                    MoreInfoRow.Cells.Add(MoreInfoCell2);
+
+                    //DateTimesCell
+                    TableCell MoreInfoCell3 = new TableCell();
+                    if (Task.Task_Deadline != null)
+                    {
+                        MoreInfoCell3.Text += "Frist: " + Task.Task_Deadline.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Task.Task_CreationDate != null)
+                    {
+                        MoreInfoCell3.Text += "Oprettet: " + Task.Task_CreationDate.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Task.Task_CompletionDate != null)
+                    {
+                        MoreInfoCell3.Text += "Færdigjort: " + Task.Task_CompletionDate.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Task.Task_ApprovedDate != null)
+                    {
+                        MoreInfoCell3.Text += "Godkendt: " + Task.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                    }
+                    MoreInfoRow.Cells.Add(MoreInfoCell3);
+                    //Remember to add the row to the table!!!!
+
+                    if (LoadSubTasks != true) //If we're not loading subtasks, we just add the row and break off.
                     {
                         Table_Tasks.Rows.Add(TempRow);
+                        Table_Tasks.Rows.Add(MoreInfoRow);
                         break;
                     }
-                    else
+                    else //IF we are however adding subrows, We add a button cell and then we add the row!
                     {
                         TableCell Cell_ToggleButton = new TableCell();
                         if (Task.Tasks1.Count > 0)
@@ -259,14 +318,19 @@ public partial class _Default : System.Web.UI.Page
                             TempRow.Cells.Add(Cell_ToggleButton);
                         }
                         Table_Tasks.Rows.Add(TempRow);
+                        Table_Tasks.Rows.Add(MoreInfoRow);
                     }
                     
-                    //Finally add the row to the table.
-                    
+
+                    //Loading of subtasks!
                     foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
                     {
                         TableRow Row_Subtask = new TableRow();
                         Row_Subtask.CssClass = "ImportantSubRow " + "Maintask" + Task.Task_ID;
+
+                        TableCell MoreInfoButtonCell = new TableCell();
+                        MoreInfoButtonCell.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Subtask.Task_ID + ")'</input>";
+                        Row_Subtask.Cells.Add(MoreInfoButtonCell);
 
                         TableCell Cell_SubTaskName = new TableCell();
                         Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name;
@@ -340,8 +404,52 @@ public partial class _Default : System.Web.UI.Page
                         Row_Subtask.Cells.Add(SubStatus2);
                         Row_Subtask.Cells.Add(SubStatus3);
 
+                        //TODO Add Logic for MoreTaskInfo
+                        TableRow SubMoreInfoRow = new TableRow();
+                        SubMoreInfoRow.CssClass = "HiddenInfoRow SubInfo" + Task.Task_ID; //We use the class to hide all on load once document is loaded. SubInfo + MainTaskID to hide if clicking the SubTask button.
+                        SubMoreInfoRow.ID = "TaskInfo" + Subtask.Task_ID;
+
+                        TableCell SubFillerCell = new TableCell(); //Button for EDIT TASK??
+                        SubMoreInfoRow.Cells.Add(SubFillerCell);
+
+                        TableCell SubMoreInfoCell = new TableCell();
+                        SubMoreInfoCell.Text = "TaskID: " + Subtask.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                        SubMoreInfoRow.Cells.Add(SubMoreInfoCell);
+
+                        TableCell SubMoreInfoCell2 = new TableCell();
+                        if (Subtask.Task_Price != null)
+                        {
+                            SubMoreInfoCell2.Text += "Pris: " + Subtask.Task_Price + " kr.<br />";
+                        }
+                        if (Subtask.Task_Department != null)
+                        {
+                            SubMoreInfoCell2.Text += "Afdeling:  " + DepartmentIndex[Subtask.Task_Department.Value];
+                        }
+                        SubMoreInfoRow.Cells.Add(SubMoreInfoCell2);
+
+                        //DateTimesCell
+                        TableCell SubMoreInfoCell3 = new TableCell();
+                        if (Subtask.Task_Deadline != null)
+                        {
+                            SubMoreInfoCell3.Text += "Frist: " + Subtask.Task_Deadline.Value.ToShortDateString() + "<br />";
+                        }
+                        if (Subtask.Task_CreationDate != null)
+                        {
+                            SubMoreInfoCell3.Text += "Oprettet: " + Subtask.Task_CreationDate.Value.ToShortDateString() + "<br />";
+                        }
+                        if (Subtask.Task_CompletionDate != null)
+                        {
+                            SubMoreInfoCell3.Text += "Færdigjort: " + Subtask.Task_CompletionDate.Value.ToShortDateString() + "<br />";
+                        }
+                        if (Subtask.Task_ApprovedDate != null)
+                        {
+                            SubMoreInfoCell3.Text += "Godkendt: " + Subtask.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                        }
+                        SubMoreInfoRow.Cells.Add(SubMoreInfoCell3);
+
                         //Finally add the row to the table.
                         Table_Tasks.Rows.Add(Row_Subtask);
+                        Table_Tasks.Rows.Add(SubMoreInfoRow);
                     }
                 }
             }
@@ -362,6 +470,11 @@ public partial class _Default : System.Web.UI.Page
             {
                 TableRow TempRow = new TableRow();
                 //TempRow.BackColor = System.Drawing.Color.OrangeRed;
+
+                TableCell MoreInfoButton = new TableCell();
+                MoreInfoButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Task.Task_ID + ")'</input>";
+                TempRow.Cells.Add(MoreInfoButton);
+
 
                 TableCell Cell_TaskName = new TableCell();
                 Cell_TaskName.Text = Task.Task_Name;
@@ -437,9 +550,53 @@ public partial class _Default : System.Web.UI.Page
 
                 //Finally add the row to the table.
 
+                TableRow MoreInfoRow = new TableRow();
+                MoreInfoRow.CssClass = "HiddenInfoRow"; //We use the class to hide all on load once document is loaded. 
+                MoreInfoRow.ID = "TaskInfo" + Task.Task_ID;
+
+                TableCell FillerCell = new TableCell(); 
+                MoreInfoRow.Cells.Add(FillerCell);
+
+                TableCell MoreInfoCell = new TableCell();
+                MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                MoreInfoRow.Cells.Add(MoreInfoCell);
+
+                TableCell MoreInfoCell2 = new TableCell();
+                if (Task.Task_Price != null)
+                {
+                    MoreInfoCell2.Text += "Pris: " + Task.Task_Price + " kr.<br />";
+                }
+                if (Task.Task_Department != null)
+                {
+                    MoreInfoCell2.Text += "Afdeling:  " + DepartmentIndex[Task.Task_Department.Value];
+                }
+                MoreInfoRow.Cells.Add(MoreInfoCell2);
+
+                //DateTimesCell
+                TableCell MoreInfoCell3 = new TableCell();
+                if (Task.Task_Deadline != null)
+                {
+                    MoreInfoCell3.Text += "Frist: " + Task.Task_Deadline.Value.ToShortDateString() + "<br />";
+                }
+                if (Task.Task_CreationDate != null)
+                {
+                    MoreInfoCell3.Text += "Oprettet: " + Task.Task_CreationDate.Value.ToShortDateString() + "<br />";
+                }
+                if (Task.Task_CompletionDate != null)
+                {
+                    MoreInfoCell3.Text += "Færdigjort: " + Task.Task_CompletionDate.Value.ToShortDateString() + "<br />";
+                }
+                if (Task.Task_ApprovedDate != null)
+                {
+                    MoreInfoCell3.Text += "Godkendt: " + Task.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                }
+                MoreInfoRow.Cells.Add(MoreInfoCell3);
+                //Remember to add the row to the table!!!!
+
                 if (LoadSubTasks != true)
                 {
                     Table_Tasks.Rows.Add(TempRow);
+                    Table_Tasks.Rows.Add(MoreInfoRow);
                     break;
                 }
                 else
@@ -451,6 +608,7 @@ public partial class _Default : System.Web.UI.Page
                         TempRow.Cells.Add(Cell_ToggleButton);
                     }
                     Table_Tasks.Rows.Add(TempRow);
+                    Table_Tasks.Rows.Add(MoreInfoRow);
                 }
 
                 foreach (var Subtask in Task.Tasks1) //Need to find a way to sort the Subtasks prior to adding them to the table!
@@ -459,8 +617,12 @@ public partial class _Default : System.Web.UI.Page
                     Row_Subtask.BackColor = System.Drawing.Color.Wheat; //Change this later so it's clearly visible it's subtasks!!!!
                     Row_Subtask.CssClass = "Maintask" + Task.Task_ID;
 
+                    TableCell MoreInfoButtonCell = new TableCell();
+                    MoreInfoButtonCell.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Subtask.Task_ID + ")'</input>";
+                    Row_Subtask.Cells.Add(MoreInfoButtonCell);
+
                     TableCell Cell_SubTaskName = new TableCell();
-                    Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name;
+                    Cell_SubTaskName.Text = "<b>&#8226 </b>" + Subtask.Task_Name; //Bullet Points
                     Row_Subtask.Cells.Add(Cell_SubTaskName);
 
                     TableCell Cell_SubTaskAction = new TableCell();
@@ -531,8 +693,51 @@ public partial class _Default : System.Web.UI.Page
                     Row_Subtask.Cells.Add(SubStatus2);
                     Row_Subtask.Cells.Add(SubStatus3);
 
+                    TableRow SubMoreInfoRow = new TableRow();
+                    SubMoreInfoRow.CssClass = "HiddenInfoRow SubInfo" + Task.Task_ID; //We use the class to hide all on load once document is loaded. SubInfo + MainTaskID to hide if clicking the SubTask button.
+                    SubMoreInfoRow.ID = "TaskInfo" + Subtask.Task_ID;
+
+                    TableCell SubFillerCell = new TableCell(); //Button for EDIT TASK??
+                    SubMoreInfoRow.Cells.Add(SubFillerCell);
+
+                    TableCell SubMoreInfoCell = new TableCell();
+                    SubMoreInfoCell.Text = "TaskID: " + Subtask.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                    SubMoreInfoRow.Cells.Add(SubMoreInfoCell);
+
+                    TableCell SubMoreInfoCell2 = new TableCell();
+                    if (Subtask.Task_Price != null)
+                    {
+                        SubMoreInfoCell2.Text += "Pris: " + Subtask.Task_Price + " kr.<br />";
+                    }
+                    if (Subtask.Task_Department != null)
+                    {
+                        SubMoreInfoCell2.Text += "Afdeling:  " + DepartmentIndex[Subtask.Task_Department.Value];
+                    }
+                    SubMoreInfoRow.Cells.Add(SubMoreInfoCell2);
+
+                    //DateTimesCell
+                    TableCell SubMoreInfoCell3 = new TableCell();
+                    if (Subtask.Task_Deadline != null)
+                    {
+                        SubMoreInfoCell3.Text += "Frist: " + Subtask.Task_Deadline.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Subtask.Task_CreationDate != null)
+                    {
+                        SubMoreInfoCell3.Text += "Oprettet: " + Subtask.Task_CreationDate.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Subtask.Task_CompletionDate != null)
+                    {
+                        SubMoreInfoCell3.Text += "Færdigjort: " + Subtask.Task_CompletionDate.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Subtask.Task_ApprovedDate != null)
+                    {
+                        SubMoreInfoCell3.Text += "Godkendt: " + Subtask.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                    }
+                    SubMoreInfoRow.Cells.Add(SubMoreInfoCell3);
+
                     //Finally add the row to the table.
                     Table_Tasks.Rows.Add(Row_Subtask);
+                    Table_Tasks.Rows.Add(SubMoreInfoRow);
                 }
             }
         }

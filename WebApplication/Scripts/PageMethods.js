@@ -4,26 +4,6 @@ function UpdateStatus(TaskID, NewStatus)
     PageMethods.UpdateStatus(TaskID, NewStatus);
 }
 
-
-/*
-jQuery(document).ready(function ($) {
-    var max = 1000;
-    $('textarea.max').keypress(function (e) {
-        if (e.which < 0x20) {
-            // e.which < 0x20, then it's not a printable character
-            // e.which === 0 - Not a character
-            return;     // Do nothing
-        }
-        if (this.value.length == max) {
-            e.preventDefault();
-        } else if (this.value.length > max) {
-            // Maximum exceeded
-            this.value = this.value.substring(0, max);
-        }
-    });
-});
-*/
-
 function CountChar(val) {
     var len = val.value.length;
     if (len >= 1000) {
@@ -34,6 +14,13 @@ function CountChar(val) {
     }
 }
 
+function HideMoreInfoRows()
+{
+    $(document).ready(function(){
+        $('.HiddenInfoRow').hide();
+    })
+}
+
 function HideSubTasks() {
     $(document).ready(function () {
         $('.ImportantSubRow').hide();
@@ -41,7 +28,7 @@ function HideSubTasks() {
     })
 }
 
-$(".btnSeccion").click(function (event) {
+$(".btnSeccion").click(function (event) { //What is this??
     btnMostrarSeccion($(this));
     event.preventDefault();
 })
@@ -76,7 +63,15 @@ function ToggleNewTaskRow()
 function ToggleSubTasks(MainTaskID)
 {
     $(document).ready(function () {
-        $('tr[class*=Maintask' + MainTaskID + ']').toggle();
+        $('tr[class*=Maintask' + MainTaskID + ']').toggle(); //This will unfold partial matches too. How to fix?
+        $('tr[class*=SubInfo' + MainTaskID + ']').hide();
+    })
+}
+
+function ToggleMoreInfo(MainTaskID)
+{
+    $(document).ready(function () {
+        $('#TaskInfo' + MainTaskID).toggle();
     })
 }
 
