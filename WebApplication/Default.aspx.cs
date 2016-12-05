@@ -52,6 +52,22 @@ public partial class _Default : System.Web.UI.Page
         }
     }
 
+    //[WebMethod]
+    //public static void SelectTask(int ID) //NEEDS TO BE STATIC? WONT NEED THIS
+    //{
+    //    using (var db = new ProjectManagerEntities())
+    //    {
+    //        var query = from Inquiry in db.Tasks
+    //                    where Inquiry.Task_ID == ID
+    //                    select Inquiry;
+
+    //        foreach (var Task in query)
+    //        {
+
+    //        }
+    //    }
+    //}
+
     [WebMethod]
     public static void UpdateStatus(int ID, int NewStatus)
     {
@@ -268,7 +284,8 @@ public partial class _Default : System.Web.UI.Page
                     MoreInfoRow.Cells.Add(FillerCell);
 
                     TableCell MoreInfoCell = new TableCell();
-                    MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                    MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />" //Don't need to check this, as there cannot be NULL values of TASK_ID
+                    +"<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a>";
                     MoreInfoRow.Cells.Add(MoreInfoCell);
 
                     TableCell MoreInfoCell2 = new TableCell();
@@ -343,7 +360,7 @@ public partial class _Default : System.Web.UI.Page
                         TableCell Cell_SubTaskStart = new TableCell();
                         if (Subtask.Task_Start != null)
                         {
-                            Cell_SubTaskStart.Text = Subtask.Task_Start.ToString();
+                            Cell_SubTaskStart.Text = Subtask.Task_Start.Value.ToShortDateString();
                         }
                         Row_Subtask.Cells.Add(Cell_SubTaskStart);
 
@@ -554,11 +571,13 @@ public partial class _Default : System.Web.UI.Page
                 MoreInfoRow.CssClass = "HiddenInfoRow"; //We use the class to hide all on load once document is loaded. 
                 MoreInfoRow.ID = "TaskInfo" + Task.Task_ID;
 
-                TableCell FillerCell = new TableCell(); 
+                TableCell FillerCell = new TableCell();
+                //FillerCell.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='CreateSubTask(" + Task.Task_ID + ")'</input>"; ;
                 MoreInfoRow.Cells.Add(FillerCell);
 
                 TableCell MoreInfoCell = new TableCell();
-                MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />"    //Don't need to check this, as there cannot be NULL values of TASK_ID
+                    + "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a>"; 
                 MoreInfoRow.Cells.Add(MoreInfoCell);
 
                 TableCell MoreInfoCell2 = new TableCell();
@@ -632,7 +651,7 @@ public partial class _Default : System.Web.UI.Page
                     TableCell Cell_SubTaskStart = new TableCell();
                     if (Subtask.Task_Start != null)
                     {
-                        Cell_SubTaskStart.Text = Subtask.Task_Start.ToString();
+                        Cell_SubTaskStart.Text = Subtask.Task_Start.Value.ToShortDateString();
                     }
                     Row_Subtask.Cells.Add(Cell_SubTaskStart);
 
@@ -833,6 +852,93 @@ public partial class _Default : System.Web.UI.Page
         }
         NewTask.Task_Status = 3;
         
+        using (var db = new ProjectManagerEntities())
+        {
+            db.Tasks.Add(NewTask);
+            db.SaveChanges();
+        }
+        Response.Redirect(Request.RawUrl);
+    }
+
+    protected void Input_SubTask_Insert_Click(object sender, EventArgs e)
+    {
+        Tasks NewTask = new Tasks();
+
+        int MainTaskID;
+        int.TryParse(Input_Task_MainTaskID.Value, out MainTaskID);
+        NewTask.Task_MainTask = MainTaskID;
+        NewTask.Task_Name = Input_Task_Name.Value;
+        NewTask.Task_Action = Input_Task_Action.Value;
+
+        DateTime StartDate;
+        DateTime.TryParse(Input_Task_StartDate.Value, out StartDate);
+        if (Input_Task_StartDate.Value == "")
+        {
+            NewTask.Task_Start = null;
+        }
+        else
+        {
+            NewTask.Task_Start = StartDate;
+        }
+
+        DateTime Deadline;
+        DateTime.TryParse(Input_Task_Deadline.Value, out Deadline);
+        if (Input_Task_Deadline.Value == "")
+        {
+            NewTask.Task_Deadline = null;
+        }
+        else
+        {
+            NewTask.Task_Deadline = Deadline;
+        }
+
+        if (Input_Task_Staff.Value == "")
+        {
+            NewTask.Task_Staff = null;
+        }
+        else
+        {
+            NewTask.Task_Staff = Input_Task_Staff.Value;
+        }
+
+        decimal Price;
+        decimal.TryParse(Input_Task_Price.Value, out Price);
+        if (Price == 0)
+        {
+            NewTask.Task_Price = null;
+        }
+        else
+        {
+            NewTask.Task_Price = Price;
+        }
+
+        NewTask.Task_IsPriority = Input_Task_IsPriority.Checked;
+        NewTask.Task_CreationDate = DateTime.Now;
+        NewTask.Task_CompletionDate = null;
+        NewTask.Task_ApprovedDate = null;
+
+        if (Input_Task_Department.SelectedValue == "Ingen")
+        {
+            NewTask.Task_Department = null;
+        }
+        else
+        {
+            using (var db = new ProjectManagerEntities())
+            {
+                var query = from Inquiry in db.Departments
+                            where Inquiry.Department_Name == Input_Task_Department.SelectedValue
+                            select Inquiry;
+
+                int SelectedDepartmentID = 0; //If it finds no number it will just put it on Dev (I guess that's the easy way of making bug reports)
+                foreach (var Department in query)
+                {
+                    SelectedDepartmentID = Department.Department_ID;
+                }
+                NewTask.Task_Department = SelectedDepartmentID;
+            }
+        }
+        NewTask.Task_Status = 3;
+
         using (var db = new ProjectManagerEntities())
         {
             db.Tasks.Add(NewTask);

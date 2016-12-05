@@ -43,6 +43,10 @@
             <div runat="server" id="InputRow">
                 <!--Left Column Bigger one-->
                 <div class="col-md-6 col-md-offset-2">
+                    <div id="form_MainTaskID_Group" class="form-group">
+                        <label for="Input_Task_MainTaskID" >MainTaskID</label>
+                        <input type="text" class="form-control" id="Input_Task_MainTaskID" readonly="true" runat="server" />
+                    </div>
                     <div class="form-group">
                         <label for="Input_Task_Name">Opgave Navn</label>
                         <input type="text" maxlength="200" class="form-control" id="Input_Task_Name" placeholder="Reperation i køkken" runat="server" />
@@ -53,7 +57,8 @@
                         <label id="CharCounter">1000</label>
                     </div>
                     <asp:Button CssClass="btn btn-info" ID="Input_Task_Insert" runat="server" Text="Gem" OnClick="Input_Task_Insert_Click" />
-                    <asp:Button CssClass="btn btn-info" ID="Input_Task_Update" runat="server" Text="Gem" OnClick="" />
+                    <asp:Button CssClass="btn btn-info" ID="Input_Task_Update" runat="server" Text="Opret Underopgave" OnClick="Input_SubTask_Insert_Click" />
+                    <input id="Button_GoBack" type="button" class="btn btn-danger" value="Fortryd" onclick="ReturnToStandard()" />
                 </div>
                 <!--Right column, smaller one!-->
                 <div class="col-md-2">
@@ -92,6 +97,7 @@
         HideNewTaskRow();
         HideSubTasks();
         HideMoreInfoRows();
+        HideUpdateTaskTools();
     </script>
 </body>
 </html>
