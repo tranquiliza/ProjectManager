@@ -15,11 +15,11 @@ Create Table Departments
 Create table Tasks
 (
 	Task_ID int identity(1,1) primary key NOT NULL,
-	Task_Name nchar(100) NOT NULL,
-	Task_Action nchar(100) NOT NULL,
+	Task_Name nchar(200) NOT NULL,
+	Task_Action nchar(1000) NOT NULL,
 	Task_Start date NULL,
 	Task_Deadline date NULL,
-	Task_Staff nchar(100) NULL,
+	Task_Staff nchar(200) NULL,
 	Task_Price decimal(18,2) NULL,
 	Task_IsPriority bit NULL,
 	Task_CreationDate date NULL,

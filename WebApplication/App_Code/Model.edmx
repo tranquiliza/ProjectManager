@@ -24,11 +24,11 @@
             <PropertyRef Name="Task_ID" />
           </Key>
           <Property Name="Task_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Task_Name" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="Task_Action" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Task_Name" Type="nchar" MaxLength="200" />
+          <Property Name="Task_Action" Type="nchar" MaxLength="1000" />
           <Property Name="Task_Start" Type="date" />
           <Property Name="Task_Deadline" Type="date" />
-          <Property Name="Task_Staff" Type="nchar" MaxLength="100" />
+          <Property Name="Task_Staff" Type="nchar" MaxLength="200" />
           <Property Name="Task_Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="bit" />
           <Property Name="Task_Department" Type="int" />
@@ -117,11 +117,11 @@
             <PropertyRef Name="Task_ID" />
           </Key>
           <Property Name="Task_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Task_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Task_Action" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Task_Name" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Task_Action" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
           <Property Name="Task_Start" Type="DateTime" Precision="0" />
           <Property Name="Task_Deadline" Type="DateTime" Precision="0" />
-          <Property Name="Task_Staff" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Task_Staff" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
           <Property Name="Task_Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="Boolean" />
           <Property Name="Task_Department" Type="Int32" />
