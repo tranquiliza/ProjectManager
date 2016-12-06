@@ -14,7 +14,7 @@ public partial class _Default : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //When we load items from the database on load, but never get rid of them, we allocate memory but never clear it. Possible memory leak on bigger system?
-        Table_Tasks.CssClass = "table table-bordered TableChanges";
+        Table_Tasks.CssClass = "table table-condensed table-bordered TableChanges";
         //Load the headers
         LoadTableHeaders();
         //Possibly make this a feature for JavaScript to handle, as this would allow individual clients to change what they see. (Instead of changing all)
@@ -110,7 +110,7 @@ public partial class _Default : System.Web.UI.Page
         // Create TableCell objects to contain
 
         TableHeaderCell headerTableCell0 = new TableHeaderCell();
-        headerTableCell0.Text = "<img src='Images/Udfold.png' />";
+        headerTableCell0.Text = "<img src='Images/MoreInfo.png' />";
         headerTableCell0.CssClass = "vertical-text-table";
         HeaderRow.Cells.Add(headerTableCell0);
 
@@ -173,8 +173,6 @@ public partial class _Default : System.Web.UI.Page
         headerTableCell9.Text = "<img src='Images/Udfold.png' />";
         headerTableCell9.CssClass = "vertical-text-table";
         HeaderRow.Cells.Add(headerTableCell9);
-
-
 
         // Add the TableHeaderRow as the first item 
         // in the Rows collection of the table.
@@ -309,13 +307,13 @@ public partial class _Default : System.Web.UI.Page
                     {
                         MoreInfoCell3.Text += "Oprettet: " + Task.Task_CreationDate.Value.ToShortDateString() + "<br />";
                     }
-                    if (Task.Task_CompletionDate != null)
-                    {
-                        MoreInfoCell3.Text += "Færdigjort: " + Task.Task_CompletionDate.Value.ToShortDateString() + "<br />";
-                    }
                     if (Task.Task_ApprovedDate != null)
                     {
                         MoreInfoCell3.Text += "Godkendt: " + Task.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Task.Task_CompletionDate != null)
+                    {
+                        MoreInfoCell3.Text += "Færdigjort: " + Task.Task_CompletionDate.Value.ToShortDateString() + "<br />";
                     }
                     MoreInfoRow.Cells.Add(MoreInfoCell3);
                     //Remember to add the row to the table!!!!
@@ -454,13 +452,13 @@ public partial class _Default : System.Web.UI.Page
                         {
                             SubMoreInfoCell3.Text += "Oprettet: " + Subtask.Task_CreationDate.Value.ToShortDateString() + "<br />";
                         }
-                        if (Subtask.Task_CompletionDate != null)
-                        {
-                            SubMoreInfoCell3.Text += "Færdigjort: " + Subtask.Task_CompletionDate.Value.ToShortDateString() + "<br />";
-                        }
                         if (Subtask.Task_ApprovedDate != null)
                         {
                             SubMoreInfoCell3.Text += "Godkendt: " + Subtask.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                        }
+                        if (Subtask.Task_CompletionDate != null)
+                        {
+                            SubMoreInfoCell3.Text += "Færdigjort: " + Subtask.Task_CompletionDate.Value.ToShortDateString() + "<br />";
                         }
                         SubMoreInfoRow.Cells.Add(SubMoreInfoCell3);
 
@@ -601,13 +599,13 @@ public partial class _Default : System.Web.UI.Page
                 {
                     MoreInfoCell3.Text += "Oprettet: " + Task.Task_CreationDate.Value.ToShortDateString() + "<br />";
                 }
-                if (Task.Task_CompletionDate != null)
-                {
-                    MoreInfoCell3.Text += "Færdigjort: " + Task.Task_CompletionDate.Value.ToShortDateString() + "<br />";
-                }
                 if (Task.Task_ApprovedDate != null)
                 {
                     MoreInfoCell3.Text += "Godkendt: " + Task.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                }
+                if (Task.Task_CompletionDate != null)
+                {
+                    MoreInfoCell3.Text += "Færdigjort: " + Task.Task_CompletionDate.Value.ToShortDateString() + "<br />";
                 }
                 MoreInfoRow.Cells.Add(MoreInfoCell3);
                 //Remember to add the row to the table!!!!
@@ -744,13 +742,13 @@ public partial class _Default : System.Web.UI.Page
                     {
                         SubMoreInfoCell3.Text += "Oprettet: " + Subtask.Task_CreationDate.Value.ToShortDateString() + "<br />";
                     }
-                    if (Subtask.Task_CompletionDate != null)
-                    {
-                        SubMoreInfoCell3.Text += "Færdigjort: " + Subtask.Task_CompletionDate.Value.ToShortDateString() + "<br />";
-                    }
                     if (Subtask.Task_ApprovedDate != null)
                     {
                         SubMoreInfoCell3.Text += "Godkendt: " + Subtask.Task_ApprovedDate.Value.ToShortDateString() + "<br />";
+                    }
+                    if (Subtask.Task_CompletionDate != null)
+                    {
+                        SubMoreInfoCell3.Text += "Færdigjort: " + Subtask.Task_CompletionDate.Value.ToShortDateString() + "<br />";
                     }
                     SubMoreInfoRow.Cells.Add(SubMoreInfoCell3);
 

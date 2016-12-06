@@ -29,3 +29,14 @@ Create table Tasks
 	Task_Status int Foreign Key (Task_Status) References Task_Status(Status_ID) NULL,
 	Task_MainTask int Foreign Key (Task_MainTask) References Tasks(Task_ID) NULL
 )
+
+Insert into Task_Status(Status_ID, Status_Name)
+values
+(0, 'Igang'),
+(1, 'Standby'),
+(2, 'Færdig'),
+(3, 'Afventer Godkendelse')
+
+insert into Departments(Department_ID, Department_Name)
+values
+(0, 'Development')
