@@ -18,7 +18,7 @@
         
         <!--Row for controls! -->
         <div runat="server" class="row" id="Controls">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <input class="btn btn-info" id="ToggleEditButton" onclick="ToggleTableButtons()" value="Redigér" type="button" />
             </div>
         </div>
@@ -26,7 +26,7 @@
         <asp:ScriptManager EnablePageMethods="true" ID="ScriptManager2" runat="server"></asp:ScriptManager>
         <!--Row for the table!-->
         <div class="row" id="table">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <asp:Table ID="Table_Tasks" runat="server">
 
                 </asp:Table>
@@ -34,7 +34,7 @@
         </div>
         <!--Row for some table controls i suppose.-->
         <div runat="server" class="row" id="RowNewTaskButton">
-            <div style="align-content:center" class="col-md-8 col-md-offset-2">
+            <div style="align-content:center" class="col-md-10 col-md-offset-1">
                 <input class="btn btn-info" id="ToggleNewTasksButton" onclick="ToggleNewTaskRow()" value="Opret Ny Opgave" type="button" />
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="row">
             <div runat="server" id="InputRow">
                 <!--Left Column Bigger one-->
-                <div class="col-md-6 col-md-offset-2">
+                <div class="col-md-6 col-md-offset-1">
                     <div id="form_MainTaskID_Group" class="form-group">
                         <label for="Input_Task_MainTaskID" >MainTaskID</label>
                         <input type="text" class="form-control" id="Input_Task_MainTaskID" readonly="true" runat="server" />

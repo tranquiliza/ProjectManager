@@ -24,21 +24,21 @@
             <PropertyRef Name="Task_ID" />
           </Key>
           <Property Name="Task_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Task_Name" Type="nchar" MaxLength="200" />
-          <Property Name="Task_Action" Type="nchar" MaxLength="1000" />
+          <Property Name="Task_Name" Type="nchar" MaxLength="200" Nullable="false" />
+          <Property Name="Task_Action" Type="nchar" MaxLength="1000" Nullable="false" />
           <Property Name="Task_Start" Type="date" />
           <Property Name="Task_Deadline" Type="date" />
           <Property Name="Task_Staff" Type="nchar" MaxLength="200" />
           <Property Name="Task_Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="bit" />
-          <Property Name="Task_Department" Type="int" />
-          <Property Name="Task_Status" Type="int" />
-          <Property Name="Task_MainTask" Type="int" />
           <Property Name="Task_CreationDate" Type="date" />
           <Property Name="Task_CompletionDate" Type="date" />
           <Property Name="Task_ApprovedDate" Type="date" />
+          <Property Name="Task_Department" Type="int" />
+          <Property Name="Task_Status" Type="int" />
+          <Property Name="Task_MainTask" Type="int" />
         </EntityType>
-        <Association Name="FK__Tasks__Task_Depa__1DE57479">
+        <Association Name="FK__Tasks__Task_Depa__145C0A3F">
           <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -50,7 +50,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tasks__Task_Main__1FCDBCEB">
+        <Association Name="FK__Tasks__Task_Main__164452B1">
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1" />
           <End Role="Tasks1" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -62,7 +62,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tasks__Task_Stat__1ED998B2">
+        <Association Name="FK__Tasks__Task_Stat__15502E78">
           <End Role="Task_Status" Type="Self.Task_Status" Multiplicity="0..1" />
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -78,15 +78,15 @@
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task_Status" EntityType="Self.Task_Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Tasks__Task_Depa__1DE57479" Association="Self.FK__Tasks__Task_Depa__1DE57479">
+          <AssociationSet Name="FK__Tasks__Task_Depa__145C0A3F" Association="Self.FK__Tasks__Task_Depa__145C0A3F">
             <End Role="Departments" EntitySet="Departments" />
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tasks__Task_Main__1FCDBCEB" Association="Self.FK__Tasks__Task_Main__1FCDBCEB">
+          <AssociationSet Name="FK__Tasks__Task_Main__164452B1" Association="Self.FK__Tasks__Task_Main__164452B1">
             <End Role="Tasks" EntitySet="Tasks" />
             <End Role="Tasks1" EntitySet="Tasks" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tasks__Task_Stat__1ED998B2" Association="Self.FK__Tasks__Task_Stat__1ED998B2">
+          <AssociationSet Name="FK__Tasks__Task_Stat__15502E78" Association="Self.FK__Tasks__Task_Stat__15502E78">
             <End Role="Task_Status" EntitySet="Task_Status" />
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
@@ -102,7 +102,7 @@
           </Key>
           <Property Name="Department_ID" Type="Int32" Nullable="false" />
           <Property Name="Department_Name" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Departments" ToRole="Tasks" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Depa__145C0A3F" FromRole="Departments" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="Task_Status">
           <Key>
@@ -110,32 +110,32 @@
           </Key>
           <Property Name="Status_ID" Type="Int32" Nullable="false" />
           <Property Name="Status_Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Task_Status" ToRole="Tasks" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Stat__15502E78" FromRole="Task_Status" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="Tasks">
           <Key>
             <PropertyRef Name="Task_ID" />
           </Key>
           <Property Name="Task_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Task_Name" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
-          <Property Name="Task_Action" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <Property Name="Task_Name" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Task_Action" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Task_Start" Type="DateTime" Precision="0" />
           <Property Name="Task_Deadline" Type="DateTime" Precision="0" />
           <Property Name="Task_Staff" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
           <Property Name="Task_Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="Boolean" />
-          <Property Name="Task_Department" Type="Int32" />
-          <Property Name="Task_Status" Type="Int32" />
-          <Property Name="Task_MainTask" Type="Int32" />
           <Property Name="Task_CreationDate" Type="DateTime" Precision="0" />
           <Property Name="Task_CompletionDate" Type="DateTime" Precision="0" />
           <Property Name="Task_ApprovedDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Departments" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Tasks" ToRole="Departments" />
-          <NavigationProperty Name="Task_Status1" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Tasks" ToRole="Task_Status" />
-          <NavigationProperty Name="Tasks1" Relationship="Self.FK__Tasks__Task_Main__1FCDBCEB" FromRole="Tasks" ToRole="Tasks1" />
-          <NavigationProperty Name="Tasks2" Relationship="Self.FK__Tasks__Task_Main__1FCDBCEB" FromRole="Tasks1" ToRole="Tasks" />
+          <Property Name="Task_Department" Type="Int32" />
+          <Property Name="Task_Status" Type="Int32" />
+          <Property Name="Task_MainTask" Type="Int32" />
+          <NavigationProperty Name="Departments" Relationship="Self.FK__Tasks__Task_Depa__145C0A3F" FromRole="Tasks" ToRole="Departments" />
+          <NavigationProperty Name="Task_Status1" Relationship="Self.FK__Tasks__Task_Stat__15502E78" FromRole="Tasks" ToRole="Task_Status" />
+          <NavigationProperty Name="Tasks1" Relationship="Self.FK__Tasks__Task_Main__164452B1" FromRole="Tasks" ToRole="Tasks1" />
+          <NavigationProperty Name="Tasks2" Relationship="Self.FK__Tasks__Task_Main__164452B1" FromRole="Tasks1" ToRole="Tasks" />
         </EntityType>
-        <Association Name="FK__Tasks__Task_Depa__1DE57479">
+        <Association Name="FK__Tasks__Task_Depa__145C0A3F">
           <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -147,7 +147,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tasks__Task_Stat__1ED998B2">
+        <Association Name="FK__Tasks__Task_Stat__15502E78">
           <End Role="Task_Status" Type="Self.Task_Status" Multiplicity="0..1" />
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -159,7 +159,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tasks__Task_Main__1FCDBCEB">
+        <Association Name="FK__Tasks__Task_Main__164452B1">
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1" />
           <End Role="Tasks1" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -175,15 +175,15 @@
           <EntitySet Name="Departments" EntityType="Self.Departments" />
           <EntitySet Name="Task_Status" EntityType="Self.Task_Status" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" />
-          <AssociationSet Name="FK__Tasks__Task_Depa__1DE57479" Association="Self.FK__Tasks__Task_Depa__1DE57479">
+          <AssociationSet Name="FK__Tasks__Task_Depa__145C0A3F" Association="Self.FK__Tasks__Task_Depa__145C0A3F">
             <End Role="Departments" EntitySet="Departments" />
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tasks__Task_Stat__1ED998B2" Association="Self.FK__Tasks__Task_Stat__1ED998B2">
+          <AssociationSet Name="FK__Tasks__Task_Stat__15502E78" Association="Self.FK__Tasks__Task_Stat__15502E78">
             <End Role="Task_Status" EntitySet="Task_Status" />
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tasks__Task_Main__1FCDBCEB" Association="Self.FK__Tasks__Task_Main__1FCDBCEB">
+          <AssociationSet Name="FK__Tasks__Task_Main__164452B1" Association="Self.FK__Tasks__Task_Main__164452B1">
             <End Role="Tasks" EntitySet="Tasks" />
             <End Role="Tasks1" EntitySet="Tasks" />
           </AssociationSet>
@@ -221,12 +221,12 @@
                 <ScalarProperty Name="Task_Staff" ColumnName="Task_Staff" />
                 <ScalarProperty Name="Task_Price" ColumnName="Task_Price" />
                 <ScalarProperty Name="Task_IsPriority" ColumnName="Task_IsPriority" />
-                <ScalarProperty Name="Task_Department" ColumnName="Task_Department" />
-                <ScalarProperty Name="Task_Status" ColumnName="Task_Status" />
-                <ScalarProperty Name="Task_MainTask" ColumnName="Task_MainTask" />
                 <ScalarProperty Name="Task_CreationDate" ColumnName="Task_CreationDate" />
                 <ScalarProperty Name="Task_CompletionDate" ColumnName="Task_CompletionDate" />
                 <ScalarProperty Name="Task_ApprovedDate" ColumnName="Task_ApprovedDate" />
+                <ScalarProperty Name="Task_Department" ColumnName="Task_Department" />
+                <ScalarProperty Name="Task_Status" ColumnName="Task_Status" />
+                <ScalarProperty Name="Task_MainTask" ColumnName="Task_MainTask" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
