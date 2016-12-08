@@ -71,7 +71,7 @@ function ToggleNewTaskRow()
 function ToggleSubTasks(MainTaskID)
 {
     $(document).ready(function () {
-        $('tr[class*=Maintask' + MainTaskID + ']').toggle(); //This will unfold partial matches too. How to fix?
+        $('tr[class~=Maintask' + MainTaskID + ']').toggle(); //This will unfold partial matches too. How to fix?
         $('tr[class*=SubInfo' + MainTaskID + ']').hide();
     })
 }
