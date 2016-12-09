@@ -6,6 +6,11 @@ function UpdateStatus(TaskID, NewStatus)
     PageMethods.UpdateStatus(TaskID, NewStatus);
 }
 
+function SetApprovedComplete(TaskID)
+{
+    PageMethods.SetApprovedComplete(TaskID);
+}
+
 
 //Textarea char counter.
 function CountChar(val) {

@@ -71,7 +71,7 @@ public partial class _Default : System.Web.UI.Page
         return ReturnMe;
     }
     
-    public void LoadDepartments()
+    private void LoadDepartments()
     {
         Input_Task_Department.Items.Clear();
         Input_Task_Department.Items.Add("Ingen");
@@ -87,6 +87,22 @@ public partial class _Default : System.Web.UI.Page
         }
     }
     
+    [WebMethod]
+    public static void SetApprovedComplete(int ID)
+    {
+        using (var db = new ProjectManagerEntities())
+        {
+            var query = from Inquiry in db.Tasks
+                        where Inquiry.Task_ID == ID
+                        select Inquiry;
+            foreach (var Task in query)
+            {
+                Task.Task_ApprovedComplete = true;
+            }
+            db.SaveChanges();
+        }
+    }
+
     [WebMethod]
     public static void UpdateStatus(int ID, int NewStatus)
     {
@@ -206,6 +222,8 @@ public partial class _Default : System.Web.UI.Page
             {
                 var query = from Inquiry in db.Tasks
                             where Inquiry.Task_IsPriority == true
+                        && Inquiry.Task_MainTask == null
+                        && Inquiry.Task_ApprovedComplete != true
                             orderby Inquiry.Task_Status
                             select Inquiry;
 
@@ -304,7 +322,11 @@ public partial class _Default : System.Web.UI.Page
                     MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />";//Don't need to check this, as there cannot be NULL values of TASK_ID
                     if (LoggedIn)
                     {
-                        MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a>";
+                        MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
+                        if (Task.Task_Status == 2)
+                        {
+                            MoreInfoCell.Text += "<a href='.' onclick='SetApprovedComplete(" + Task.Task_ID + ")';'>Godkend Færdig</a>";
+                        }
                     }
                     MoreInfoRow.Cells.Add(MoreInfoCell);
 
@@ -499,7 +521,8 @@ public partial class _Default : System.Web.UI.Page
         {
             var query = from Inquiry in db.Tasks
                         where Inquiry.Task_IsPriority == false
-                        && Inquiry.Task_MainTask == null
+                    && Inquiry.Task_MainTask == null
+                    && Inquiry.Task_ApprovedComplete != true
                         orderby Inquiry.Task_Status ascending
                         select Inquiry;
 
@@ -599,7 +622,11 @@ public partial class _Default : System.Web.UI.Page
                 MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />";//Don't need to check this, as there cannot be NULL values of TASK_ID
                 if (LoggedIn)
                 {
-                    MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a>";
+                    MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
+                    if (Task.Task_Status == 2)
+                    {
+                        MoreInfoCell.Text += "<a href='.' onclick='SetApprovedComplete(" + Task.Task_ID + ");''>Godkend Færdig</a>";
+                    }
                 }
 
                 MoreInfoRow.Cells.Add(MoreInfoCell);
