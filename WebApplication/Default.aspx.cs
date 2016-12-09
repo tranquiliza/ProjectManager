@@ -217,17 +217,16 @@ public partial class _Default : System.Web.UI.Page
         Table_Tasks.Rows.AddAt(0, HeaderRow);
     }
     
-    private void LoadPriortyRows(bool ShouldLoad = true, bool LoadSubTasks = true, bool AllowEdits = false)
+    private void LoadPriortyRows(bool ShouldLoad = true, bool LoadSubTasks = true, bool AllowEdits = false) //We could have made this function much easier.!
     {
         if (ShouldLoad)
         {
             using (var db = new ProjectManagerEntities())
             {
-                var query = from Inquiry in db.Tasks
+                var query = from Inquiry in db.Tasks.OrderBy(status => status.Task_Status).ThenByDescending(date => date.Task_CompletionDate) //This expression allows me to do the select once, instead of doing it twice. #FacePalm.
                             where Inquiry.Task_IsPriority == true
                         && Inquiry.Task_MainTask == null
                         && Inquiry.Task_ApprovedComplete != true
-                            orderby Inquiry.Task_Status
                             select Inquiry;
 
                 foreach (var Task in query)
@@ -527,11 +526,10 @@ public partial class _Default : System.Web.UI.Page
     {
         using (var db = new ProjectManagerEntities())
         {
-            var query = from Inquiry in db.Tasks
+            var query = from Inquiry in db.Tasks.OrderBy(status => status.Task_Status).ThenByDescending(date => date.Task_CompletionDate)
                         where Inquiry.Task_IsPriority == false
                     && Inquiry.Task_MainTask == null
                     && Inquiry.Task_ApprovedComplete != true
-                        orderby Inquiry.Task_Status ascending
                         select Inquiry;
 
             foreach (var Task in query)
