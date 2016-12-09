@@ -34,25 +34,24 @@ public partial class _Default : System.Web.UI.Page
             LoginButton.Visible = true;
             LogoutButton.Visible = false;
         }
+        //Controls that a visible depending if Edits Allowed or not.
+        RowNewTaskButton.Visible = AllowEdits;
+        InputRow.Visible = AllowEdits;
+        EditTaskRow.Visible = AllowEdits;
+        EditTaskInputs.Visible = AllowEdits;
 
         //When we load items from the database on load, but never get rid of them, we allocate memory but never clear it. Possible memory leak on bigger system?
         Table_Tasks.CssClass = "table table-condensed table-bordered TableChanges";
         //Load the headers
         LoadTableHeaders();
-        //Security wise, disabling this will make sure nobody gets access!
-        //Maybe the same with undertasks?
-        if (AllowEdits == false)
-        {
-            RowNewTaskButton.Visible = false;
-            InputRow.Visible = false;
-        }
-        if (!Page.IsPostBack)
+        if (!Page.IsPostBack) //Loading departments into the Dropdown Menu (when it's not a postback, to prevent the selection resetting on button clicks)
         {
             LoadDepartments();
         }
         DepartmentIndex = LoadDepartmentList();
         LoadPriortyRows(true, true, AllowEdits);
         LoadRows(true, AllowEdits);
+        CheckSessionForEdit();
     }
 
     private List<string> LoadDepartmentList()
@@ -75,6 +74,8 @@ public partial class _Default : System.Web.UI.Page
     {
         Input_Task_Department.Items.Clear();
         Input_Task_Department.Items.Add("Ingen");
+        Edit_DepartmentDropdown.Items.Clear();
+        Edit_DepartmentDropdown.Items.Add("Ingen");
         using (var db = new ProjectManagerEntities())
         {
             var query = from Inquiry in db.Departments
@@ -83,6 +84,7 @@ public partial class _Default : System.Web.UI.Page
             foreach (var Department in query)
             {
                 Input_Task_Department.Items.Add(Department.Department_Name);
+                Edit_DepartmentDropdown.Items.Add(Department.Department_Name);
             }
         }
     }
@@ -90,6 +92,7 @@ public partial class _Default : System.Web.UI.Page
     [WebMethod]
     public static void SetApprovedComplete(int ID)
     {
+        //Perhabs put in a date for this change as well, this requires another database update however.
         using (var db = new ProjectManagerEntities())
         {
             var query = from Inquiry in db.Tasks
@@ -323,6 +326,7 @@ public partial class _Default : System.Web.UI.Page
                     if (LoggedIn)
                     {
                         MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
+                        MoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Task.Task_ID + "); return false;'>Redigér</a><br />";
                         if (Task.Task_Status == 2)
                         {
                             MoreInfoCell.Text += "<a href='.' onclick='SetApprovedComplete(" + Task.Task_ID + ")';'>Godkend Færdig</a>";
@@ -467,12 +471,16 @@ public partial class _Default : System.Web.UI.Page
                         TableRow SubMoreInfoRow = new TableRow();
                         SubMoreInfoRow.CssClass = "HiddenInfoRow SubInfo" + Task.Task_ID; //We use the class to hide all on load once document is loaded. SubInfo + MainTaskID to hide if clicking the SubTask button.
                         SubMoreInfoRow.ID = "TaskInfo" + Subtask.Task_ID;
-
+                        
                         TableCell SubFillerCell = new TableCell(); //Button for EDIT TASK??
                         SubMoreInfoRow.Cells.Add(SubFillerCell);
 
                         TableCell SubMoreInfoCell = new TableCell();
                         SubMoreInfoCell.Text = "TaskID: " + Subtask.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                        if (LoggedIn)
+                        {
+                            SubMoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Subtask.Task_ID + "); return false;'>Redigér</a><br />";
+                        }
                         SubMoreInfoRow.Cells.Add(SubMoreInfoCell);
 
                         TableCell SubMoreInfoCell2 = new TableCell();
@@ -623,6 +631,7 @@ public partial class _Default : System.Web.UI.Page
                 if (LoggedIn)
                 {
                     MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
+                    MoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Task.Task_ID + "); return false;'>Redigér</a><br />";
                     if (Task.Task_Status == 2)
                     {
                         MoreInfoCell.Text += "<a href='.' onclick='SetApprovedComplete(" + Task.Task_ID + ");''>Godkend Færdig</a>";
@@ -772,6 +781,10 @@ public partial class _Default : System.Web.UI.Page
 
                     TableCell SubMoreInfoCell = new TableCell();
                     SubMoreInfoCell.Text = "TaskID: " + Subtask.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
+                    if (LoggedIn)
+                    {
+                        SubMoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Subtask.Task_ID + "); return false;'>Redigér</a><br />";
+                    }
                     SubMoreInfoRow.Cells.Add(SubMoreInfoCell);
 
                     TableCell SubMoreInfoCell2 = new TableCell();
@@ -1029,6 +1042,183 @@ public partial class _Default : System.Web.UI.Page
         {
             Session.Remove("Login");
         }
+        if (Session["EditTaskID"] != null)
+        {
+            Session.Remove("EditTaskID");
+        }
         Response.Redirect(Request.RawUrl);
+    }
+
+    //Edit methods
+    protected void Edit_TaskButton_Click(object sender, EventArgs e)
+    {
+        int Task_ID;
+        int.TryParse(Edit_TaskID.Value, out Task_ID);
+
+        Session.Add("EditTaskID", Task_ID);
+        Response.Redirect(Request.RawUrl);
+    }
+
+    private void CheckSessionForEdit()
+    {
+        //Session.Add("EditTaskID", 1009); //I added this line just for testing purposes. 
+        if (Session["EditTaskID"] != null)
+        {
+            int TaskID = (int)Session["EditTaskID"];
+            LoadTaskInfoForEdit(TaskID);
+            //We hide the table and other rows that we don't need while we edit.
+            EditTaskRow.Visible = false;
+            InputRow.Visible = false;
+            RowNewTaskButton.Visible = false;
+            Table_Tasks.Visible = false;
+        }
+        else//If there is no Edit in progress:
+        {
+            EditTaskInputs.Visible = false;
+        }
+    }
+
+    private void LoadTaskInfoForEdit(int TaskID)
+    {
+        //This will be called upon page load, if the Session["EditTaskID"] != null!
+        //This function will load all the information from the selected task into controls that can then be edited!
+        if (Page.IsPostBack)
+        {
+            return;
+        }
+
+        using (var db = new ProjectManagerEntities())
+        {
+            var query = from Inquiry in db.Tasks
+                        where Inquiry.Task_ID == TaskID
+                        select Inquiry;
+
+            foreach (var Task in query)
+            {
+                if (Task.Task_Name != null)
+                {
+                    Edit_TaskName.Value = Task.Task_Name;
+                }
+                if (Task.Task_Action != null)
+                {
+                    Edit_TaskAction.Value = Task.Task_Action;
+                }
+                if (Task.Task_Start != null)
+                {
+                    DateTime StartDate = Task.Task_Start.Value;
+                    Edit_StartDate.Value = StartDate.ToString("yyyy-MM-dd");
+                }
+                if (Task.Task_Deadline != null)
+                {
+                    DateTime Deadline = Task.Task_Deadline.Value;
+                    Edit_Deadline.Value = Task.Task_Deadline.Value.ToString("yyyy-MM-dd");
+                }
+                if (Task.Task_Staff != null)
+                {
+                    Edit_Staff.Value = Task.Task_Staff;
+                }
+                if (Task.Departments != null)
+                {
+                    Edit_DepartmentDropdown.SelectedValue = DepartmentIndex[Task.Task_Department.Value];
+                }
+                if (Task.Task_Price != null)
+                {
+                    Edit_Price.Value = Task.Task_Price.ToString();
+                }
+                if (Task.Task_IsPriority != null)
+                {
+                    Edit_PriorityTask.Checked = Task.Task_IsPriority.Value;
+                }
+            }
+        }
+    }
+
+    protected void Button_EditTask_Abort_Click(object sender, EventArgs e)
+    {
+        if (Session["EditTaskID"] != null) //When we abort, we just remove the EditTaskID, so we return to the mainwindow
+        {
+            Session.Remove("EditTaskID");
+        }
+        Response.Redirect(Request.RawUrl);
+    }
+
+    protected void Button_EditTask_Confirm_Click(object sender, EventArgs e)
+    {
+        int TaskToUpdate;
+        if (Session["EditTaskID"] != null)
+        {
+            TaskToUpdate = (int)Session["EditTaskID"];
+        }
+        else
+        {
+            return;
+        }
+        //This is where the logic goes for updating a task
+        using (var db = new ProjectManagerEntities())
+        {
+            var query = from Inquiry in db.Tasks
+                        where Inquiry.Task_ID == TaskToUpdate
+                        select Inquiry;
+
+            foreach (var Task in query)
+            {
+                if (Edit_TaskName.Value != null)
+                {
+                    Task.Task_Name = Edit_TaskName.Value;
+                }
+                if (Edit_TaskAction.Value != null)
+                {
+                    Task.Task_Action = Edit_TaskAction.Value;
+                }
+                if (Edit_StartDate.Value != "")
+                {
+                    DateTime StartDate;
+                    DateTime.TryParse(Edit_StartDate.Value, out StartDate);
+                    Task.Task_Start = StartDate;
+                }
+                if (Edit_Deadline.Value != "")
+                {
+                    DateTime Deadline;
+                    DateTime.TryParse(Edit_Deadline.Value, out Deadline);
+                    Task.Task_Deadline = Deadline;
+                }
+                if (Edit_Staff.Value != null)
+                {
+                    Task.Task_Staff = Edit_Staff.Value;
+                }
+                if (Edit_DepartmentDropdown.SelectedValue != null)
+                {
+                    if (Edit_DepartmentDropdown.SelectedValue == "Ingen")
+                    {
+                        Task.Task_Department = null;
+                    }
+                    else
+                    {
+                        Task.Task_Department = Edit_DepartmentDropdown.SelectedIndex - 1; //We know that index 0 will always be "Ingen", otherwise they should follow the indexing of the Database.
+                    }
+                }
+
+                if (Edit_Price.Value != null)
+                {
+                    if (Edit_Price.Value == "")
+                    {
+                        Task.Task_Price = null;
+                    }
+                    else
+                    {
+                        decimal Price;
+                        decimal.TryParse(Edit_Price.Value, out Price);
+                        Task.Task_Price = Price;
+                    }
+                }
+                Task.Task_IsPriority = Edit_PriorityTask.Checked;
+            }
+            db.SaveChanges();
+            if (Session["EditTaskID"] != null) //We're done, so now we can remove the Session Variable.
+            {
+                Session.Remove("EditTaskID");
+            }
+            Response.Redirect(Request.RawUrl);
+        }
     }
 }

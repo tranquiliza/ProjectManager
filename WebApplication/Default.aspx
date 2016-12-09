@@ -76,11 +76,11 @@
                         <input id="Input_Task_StartDate" type="date" class="form-control" runat="server" />
                     </div>
                     <div class="form-group">
-                        <label for="StartDate">Opgave Frist</label>
+                        <label for="Input_Task_Deadline">Opgave Frist</label>
                         <input id="Input_Task_Deadline" type="date" class="form-control" runat="server" />
                     </div>
                     <div class="form-group">
-                        <label for="DropDownList1">Personale</label>
+                        <label for="Input_Task_Staff">Personale</label>
                         <input id="Input_Task_Staff" maxlength="200" type="text" class="form-control" runat="server" />
                     </div>
                     <div class="form-group">
@@ -100,13 +100,67 @@
                 </div>
             </div>
         </div>
+        <div id="EditTaskRow" runat="server" class="row">
+            <div class="col-md-6 col-md-offset-1">
+                <div class="form-inline">
+                    <input readonly="true" type="number" id="Edit_TaskID" class="form-control" runat="server" />
+                    <asp:Button CssClass="btn btn-info" ID="Edit_TaskButton" runat="server" Text="Redigér" OnClick="Edit_TaskButton_Click" />
+                    <input type="button" class="btn btn-danger" id="Edit_AbortEditTaskButton" onclick="HideEditTaskRow()" runat="server" value="Fortryd" />
+                </div>
+            </div>
+        </div>
+        <div id="EditTaskInputs" runat="server" class="row">
+            <!--Left Column-->
+            <div class="col-md-6 col-md-offset-1">
+                <div class="form-group">
+                    <label for="Edit_TaskName">Opgave Navn</label>
+                    <input type="text" maxlength="200" class="form-control" id="Edit_TaskName" placeholder="Reperation i køkken" runat="server" />
+                </div>
+                <div class="form-group">
+                    <label for="Edit_TaskAction">Action</label>
+                    <textarea maxlength="1000" onkeyup="CountChar(this)" id="Edit_TaskAction" class="form-control max" rows="9" placeholder="KæmpeSTOR opgavebeskrivelse her!" runat="server"></textarea>
+                    <label id="CharCounter2">1000</label>
+                </div>
+                <asp:Button CssClass="btn btn-info" ID="Button_EditTask_Confirm" runat="server" Text="Gem" OnClick="Button_EditTask_Confirm_Click" />
+                <asp:Button CssClass="btn btn-danger" ID="Button_EditTask_Abort" runat="server" Text="Fortryd" OnClick="Button_EditTask_Abort_Click" />
+            </div>
+            <!--Right Column-->
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="Edit_StartDate">Forventet Start</label>
+                    <input id="Edit_StartDate" type="date" class="form-control" runat="server" />
+                </div>
+                <div class="form-group">
+                    <label for="Edit_Deadline">Opgave Frist</label>
+                    <input id="Edit_Deadline" type="date" class="form-control" runat="server" />
+                </div>
+                <div class="form-group">
+                    <label for="Edit_Staff">Personale</label>
+                    <input id="Edit_Staff" maxlength="200" type="text" class="form-control" runat="server" />
+                </div>
+                <div class="form-group">
+                    <label for="Edit_DepartmentDropdown">Afdeling</label>
+                    <asp:DropDownList ID="Edit_DepartmentDropdown" CssClass="form-control" runat="server"></asp:DropDownList>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-addon">DKK</div>
+                    <input type="text" class="form-control" id="Edit_Price" placeholder="50,75" runat="server" />
+                    <div class="input-group-addon">,-</div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input id="Edit_PriorityTask" runat="server" type="checkbox" /> Prioritets Opgave
+                    </label>
+                </div>
+            </div>
+        </div>
     </form>
     <script>
-        //HideTableButtons();
         HideNewTaskRow();
         HideSubTasks();
         HideMoreInfoRows();
-        HideUpdateTaskTools();
+        HideCreateSubTaskTools();
+        HideEditTaskRow();
     </script>
 </body>
 </html>

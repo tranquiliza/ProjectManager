@@ -8,7 +8,6 @@ Database Improvements:
 	Database needs:
 		Email History table?
 
-
 	Database Expansion:
 		Staff Table: Could include references to possible staff entities. This would make it possible to store information about staff and specify even further if wanted!
 
@@ -16,16 +15,18 @@ Frontend/Backend Improvements:
 	Sorting of subtasks. 
 	Sorting tasks according to deadline. (Closest Deadline ontop) (This is subsort after initial sort, where Tasks are loaded Prio First -> Regular)?
 
-	Some way to edit an existing tasks information (In case a task gets Approved, but now it gets a deadline).
-
 	*A way of Approving Completion (Button / Link under Expand, same place as SubTask Creation.) Confirm dialog, as this is a one way only.
 		Do we want to set a date for when this action was made as well?
 	
+	Some way to edit an existing tasks information (In case a task gets Approved, but now it gets a deadline).
 	To edit task; Set a Session Variable, with number. 
 		If var is NULL, dont do anything.
 		If it's not however, we get data from database, and display in forms. 
 		User edits, and Updates the data, and saves it to database.
 		Upon save, var is removed (NULL), so we get back to the standard view again. (This can only happy if user is logged in!)
+
+
+	Make it so when the rows are loaded into the table, the ones that are hidden by default, gets this value assigned as it's added. (Prevents flickering upon refresh);
 
 	PW Encryption stuff: http://stackoverflow.com/questions/212510/what-is-the-easiest-way-to-encrypt-a-password-when-i-save-it-to-the-registry
 

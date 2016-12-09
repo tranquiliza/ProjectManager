@@ -8,7 +8,10 @@ function UpdateStatus(TaskID, NewStatus)
 
 function SetApprovedComplete(TaskID)
 {
-    PageMethods.SetApprovedComplete(TaskID);
+    var Confirmation = confirm("Er du sikker du vil sætte denne opgave færdig?");
+    if (Confirmation == true) {
+        PageMethods.SetApprovedComplete(TaskID);
+    }
 }
 
 
@@ -20,6 +23,7 @@ function CountChar(val) {
     }
     else {
         $('#CharCounter').text(999 - len);
+        $('#CharCounter2').text(999 - len);
     }
 }
 
@@ -89,7 +93,7 @@ function ToggleMoreInfo(MainTaskID)
     })
 }
 
-//Called upon page load in order to hide edit buttons in the table (UpdateStatus)
+//Called upon page load in order to hide edit buttons in the table (UpdateStatus) - We no longer do this, as these are controlled by login!
 function HideTableButtons() {
     $('.TableButton').hide();
 }
@@ -116,7 +120,27 @@ function ToggleTableButtons()
     })
 }
 
-function HideUpdateTaskTools(){
+function HideEditTaskRow()
+{
+    $(document).ready(function () {
+        $('#EditTaskRow').hide();
+        $('#RowNewTaskButton').show();
+    })
+    Editing = false;
+}
+
+
+function EditTask(TaskID)
+{
+    $(document).ready(function () {
+        //Visibility Control:
+        $('#RowNewTaskButton').hide();
+        $('#EditTaskRow').show();
+        $('#Edit_TaskID').val(TaskID); //Putting ID of the task we want to edit into the box, so user don't have to.
+    })
+}
+
+function HideCreateSubTaskTools(){
     $(document).ready(function(){
         $('#form_MainTaskID_Group').hide();
         $('#Input_Task_Update').hide();
