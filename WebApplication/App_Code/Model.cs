@@ -25,6 +25,12 @@ public partial class Departments
     public virtual ICollection<Tasks> Tasks { get; set; }
 }
 
+public partial class Logins
+{
+    public int Login_ID { get; set; }
+    public string Login_Password { get; set; }
+}
+
 public partial class Task_Status
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -62,6 +68,7 @@ public partial class Tasks
     public Nullable<System.DateTime> Task_CreationDate { get; set; }
     public Nullable<System.DateTime> Task_CompletionDate { get; set; }
     public Nullable<System.DateTime> Task_ApprovedDate { get; set; }
+    public Nullable<bool> Task_ApprovedComplete { get; set; }
 
     public virtual Departments Departments { get; set; }
     public virtual Task_Status Task_Status1 { get; set; }

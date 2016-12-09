@@ -26,7 +26,6 @@ public partial class _Default : System.Web.UI.Page
             AllowEdits = true;
             LoginButton.Visible = false;
             LogoutButton.Visible = true;
-            Login_Label.Visible = false;
         }
         else
         {
@@ -34,7 +33,6 @@ public partial class _Default : System.Web.UI.Page
             AllowEdits = false;
             LoginButton.Visible = true;
             LogoutButton.Visible = false;
-            Login_Label.Visible = true;
         }
 
         //When we load items from the database on load, but never get rid of them, we allocate memory but never clear it. Possible memory leak on bigger system?
@@ -50,17 +48,33 @@ public partial class _Default : System.Web.UI.Page
         }
         if (!Page.IsPostBack)
         {
+            LoadDepartments();
         }
-        LoadDepartments();
+        DepartmentIndex = LoadDepartmentList();
         LoadPriortyRows(true, true, AllowEdits);
         LoadRows(true, AllowEdits);
+    }
+
+    private List<string> LoadDepartmentList()
+    {
+        List<string> ReturnMe = new List<string>();
+        using (var db = new ProjectManagerEntities())
+        {
+            var query = from Inquiry in db.Departments
+                        select Inquiry;
+
+            foreach (var Department in query)
+            {
+                ReturnMe.Add(Department.Department_Name);
+            }
+        }
+        return ReturnMe;
     }
     
     public void LoadDepartments()
     {
         Input_Task_Department.Items.Clear();
         Input_Task_Department.Items.Add("Ingen");
-        DepartmentIndex = new List<string>();
         using (var db = new ProjectManagerEntities())
         {
             var query = from Inquiry in db.Departments
@@ -69,7 +83,6 @@ public partial class _Default : System.Web.UI.Page
             foreach (var Department in query)
             {
                 Input_Task_Department.Items.Add(Department.Department_Name);
-                DepartmentIndex.Add(Department.Department_Name);
             }
         }
     }
@@ -960,9 +973,25 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Login_Click(object sender, EventArgs e)
     {
+        //byte[] data = System.Text.Encoding.ASCII.GetBytes(Input_Password.Value);
+        //data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data); //Encryption for once I figure out.
+        //string hash = System.Text.Encoding.ASCII.GetString(data);
+
         if (Session["Login"] == null)
         {
-            Session.Add("Login", true);
+            using (var db = new ProjectManagerEntities())
+            {
+                var query = from Inquiry in db.Logins
+                            select Inquiry;
+                foreach (var Login in query)
+                {
+                    if (Login.Login_Password == Input_Password.Value)
+                    {
+                        Session.Add("Login", true);
+                        break;
+                    }
+                }
+            }
         }
         Response.Redirect(Request.RawUrl);
     }

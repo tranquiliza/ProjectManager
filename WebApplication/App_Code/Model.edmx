@@ -4,31 +4,38 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ProjectManagerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ProjectManagerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Departments">
           <Key>
             <PropertyRef Name="Department_ID" />
           </Key>
           <Property Name="Department_ID" Type="int" Nullable="false" />
-          <Property Name="Department_Name" Type="nchar" MaxLength="40" />
+          <Property Name="Department_Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Logins">
+          <Key>
+            <PropertyRef Name="Login_ID" />
+          </Key>
+          <Property Name="Login_ID" Type="int" Nullable="false" />
+          <Property Name="Login_Password" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Task_Status">
           <Key>
             <PropertyRef Name="Status_ID" />
           </Key>
           <Property Name="Status_ID" Type="int" Nullable="false" />
-          <Property Name="Status_Name" Type="nchar" MaxLength="20" />
+          <Property Name="Status_Name" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Tasks">
           <Key>
             <PropertyRef Name="Task_ID" />
           </Key>
           <Property Name="Task_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Task_Name" Type="nchar" MaxLength="200" />
-          <Property Name="Task_Action" Type="nchar" MaxLength="1000" />
+          <Property Name="Task_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Task_Action" Type="nvarchar" MaxLength="1000" />
           <Property Name="Task_Start" Type="date" />
           <Property Name="Task_Deadline" Type="date" />
-          <Property Name="Task_Staff" Type="nchar" MaxLength="200" />
+          <Property Name="Task_Staff" Type="nvarchar" MaxLength="200" />
           <Property Name="Task_Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="bit" />
           <Property Name="Task_Department" Type="int" />
@@ -37,6 +44,7 @@
           <Property Name="Task_CreationDate" Type="date" />
           <Property Name="Task_CompletionDate" Type="date" />
           <Property Name="Task_ApprovedDate" Type="date" />
+          <Property Name="Task_ApprovedComplete" Type="bit" />
         </EntityType>
         <Association Name="FK__Tasks__Task_Depa__1DE57479">
           <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
@@ -76,6 +84,7 @@
         </Association>
         <EntityContainer Name="ProjectManagerModelStoreContainer">
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logins" EntityType="Self.Logins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task_Status" EntityType="Self.Task_Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Tasks__Task_Depa__1DE57479" Association="Self.FK__Tasks__Task_Depa__1DE57479">
@@ -91,8 +100,7 @@
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProjectManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -101,7 +109,7 @@
             <PropertyRef Name="Department_ID" />
           </Key>
           <Property Name="Department_ID" Type="Int32" Nullable="false" />
-          <Property Name="Department_Name" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
+          <Property Name="Department_Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Departments" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="Task_Status">
@@ -109,7 +117,7 @@
             <PropertyRef Name="Status_ID" />
           </Key>
           <Property Name="Status_ID" Type="Int32" Nullable="false" />
-          <Property Name="Status_Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Status_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Task_Status" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="Tasks">
@@ -117,11 +125,11 @@
             <PropertyRef Name="Task_ID" />
           </Key>
           <Property Name="Task_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Task_Name" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
-          <Property Name="Task_Action" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <Property Name="Task_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Task_Action" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Task_Start" Type="DateTime" Precision="0" />
           <Property Name="Task_Deadline" Type="DateTime" Precision="0" />
-          <Property Name="Task_Staff" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Task_Staff" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Task_Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Task_IsPriority" Type="Boolean" />
           <Property Name="Task_Department" Type="Int32" />
@@ -130,6 +138,7 @@
           <Property Name="Task_CreationDate" Type="DateTime" Precision="0" />
           <Property Name="Task_CompletionDate" Type="DateTime" Precision="0" />
           <Property Name="Task_ApprovedDate" Type="DateTime" Precision="0" />
+          <Property Name="Task_ApprovedComplete" Type="Boolean" />
           <NavigationProperty Name="Departments" Relationship="Self.FK__Tasks__Task_Depa__1DE57479" FromRole="Tasks" ToRole="Departments" />
           <NavigationProperty Name="Task_Status1" Relationship="Self.FK__Tasks__Task_Stat__1ED998B2" FromRole="Tasks" ToRole="Task_Status" />
           <NavigationProperty Name="Tasks1" Relationship="Self.FK__Tasks__Task_Main__1FCDBCEB" FromRole="Tasks" ToRole="Tasks1" />
@@ -187,7 +196,15 @@
             <End Role="Tasks" EntitySet="Tasks" />
             <End Role="Tasks1" EntitySet="Tasks" />
           </AssociationSet>
+          <EntitySet Name="Logins" EntityType="ProjectManagerModel.Logins" />
         </EntityContainer>
+        <EntityType Name="Logins">
+          <Key>
+            <PropertyRef Name="Login_ID" />
+          </Key>
+          <Property Name="Login_ID" Type="Int32" Nullable="false" />
+          <Property Name="Login_Password" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -227,6 +244,15 @@
                 <ScalarProperty Name="Task_CreationDate" ColumnName="Task_CreationDate" />
                 <ScalarProperty Name="Task_CompletionDate" ColumnName="Task_CompletionDate" />
                 <ScalarProperty Name="Task_ApprovedDate" ColumnName="Task_ApprovedDate" />
+                <ScalarProperty Name="Task_ApprovedComplete" ColumnName="Task_ApprovedComplete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="ProjectManagerModel.Logins">
+              <MappingFragment StoreEntitySet="Logins">
+                <ScalarProperty Name="Login_Password" ColumnName="Login_Password" />
+                <ScalarProperty Name="Login_ID" ColumnName="Login_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

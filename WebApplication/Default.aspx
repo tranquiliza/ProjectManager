@@ -19,9 +19,10 @@
         <!--Row for controls! -->
         <div runat="server" class="row" id="Controls">
             <div class="col-md-2 col-md-offset-1">
-                <div id="LoginForm" runat="server" class="form-group">
-                    <label id="Login_Label" runat="server" for="Input_Password">Kodeord</label>
-                    <input style="margin-bottom:2px;" id="Input_Password" class="form-control" type="password" runat="server" />
+                <div class="form-inline">
+                    <div id="LoginForm" runat="server" class="form-group">
+                        <input style="margin-bottom:2px;" id="Input_Password" class="form-control" type="password" placeholder="Kodeord" runat="server" />
+                    </div>
                     <asp:Button ID="LoginButton" runat="server" Text="Log Ind" CssClass="btn btn-info" OnClick="Login_Click" />
                     <asp:Button ID="LogoutButton" runat="server" Text="Log Ud" CssClass="btn btn-danger" OnClick="LogoutButton_Click" />
                 </div>

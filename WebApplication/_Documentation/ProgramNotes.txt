@@ -5,9 +5,8 @@ Database Improvements:
 	UPDATED TO ITERATION 2!
 	* Intern / Extern value?
 
-	Database needs: 
-	* Login Table (For different passwords? (Just one at first))
-	* Additional column in tasks for ultimate finish. (Approved Complete)
+	Database needs:
+		Email History table?
 
 
 	Database Expansion:
@@ -15,9 +14,22 @@ Database Improvements:
 
 Frontend/Backend Improvements: 
 	Sorting of subtasks. 
-	Sorting tasks according to deadline. (Closest Deadline ontop) (This is subsort after initial sort, where Tasks are loaded Prio First -> Regular)
+	Sorting tasks according to deadline. (Closest Deadline ontop) (This is subsort after initial sort, where Tasks are loaded Prio First -> Regular)?
 
-	Some way to edit a existing tasks information (In case a task gets Approved, but now it gets a deadline).
+	Some way to edit an existing tasks information (In case a task gets Approved, but now it gets a deadline).
+
+	A way of Approving Completion (Button / Link under Expand, same place as SubTask Creation.) Confirm dialog, as this is a one way only.
+
+	PW Encryption stuff: http://stackoverflow.com/questions/212510/what-is-the-easiest-way-to-encrypt-a-password-when-i-save-it-to-the-registry
+
+	Frontend Expansion:
+		It's possible to make it so the frontend adapts to the login given, so certain passwords have access to certain modules. (1 for staff, 1 for boss).
 
 BUGS:
 	
+
+BugFixes:
+	Postbacks were causing the dropdown menu to reset causing insert statement to insert NULL values
+	Partial hit unfolding subtasks
+	No longer needing to redo first task_status change
+	Fixed Database whitespacing problem
