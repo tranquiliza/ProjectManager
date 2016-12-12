@@ -1,6 +1,18 @@
 ﻿//Prevent user from user enter key to make mistakes
-
 //Our method for updating task status with a single click!
+
+//function PrintTable()
+//{
+//    var divToPrint = document.getElementById("table");
+//    var popupWin = window.open('', '_blank', 'width=500,height=400,location=no,left=200px');
+//    popupWin.document.write('<html>' +
+//        '<head>' +
+//        '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>' +
+//        '<link rel="stylesheet" type="text/css" href="TableStyling.css" />'+
+//        '</head>' +
+//        '<body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+//}
+
 function UpdateStatus(TaskID, NewStatus)
 {
     PageMethods.UpdateStatus(TaskID, NewStatus);

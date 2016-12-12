@@ -149,7 +149,7 @@ public partial class _Default : System.Web.UI.Page
 
         TableHeaderCell headerTableCell0 = new TableHeaderCell();
         headerTableCell0.Text = "<img src='Images/MoreInfo.png' />";
-        headerTableCell0.CssClass = "vertical-text-table";
+        headerTableCell0.CssClass = "vertical-text-table NoPrint";
         HeaderRow.Cells.Add(headerTableCell0);
 
         TableHeaderCell headerTableCell1 = new TableHeaderCell();
@@ -209,7 +209,7 @@ public partial class _Default : System.Web.UI.Page
         
         TableHeaderCell headerTableCell9 = new TableHeaderCell();
         headerTableCell9.Text = "<img src='Images/Udfold.png' />";
-        headerTableCell9.CssClass = "vertical-text-table";
+        headerTableCell9.CssClass = "vertical-text-table NoPrint";
         HeaderRow.Cells.Add(headerTableCell9);
 
         // Add the TableHeaderRow as the first item 
@@ -235,6 +235,7 @@ public partial class _Default : System.Web.UI.Page
                     TempRow.CssClass = "ImportantRow";
 
                     TableCell Cell_MoreInfoButton = new TableCell();
+                    Cell_MoreInfoButton.CssClass = "NoPrint";
                     Cell_MoreInfoButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Task.Task_ID + ")'</input>"; //FunctionCall(ToggleMoreInfo(#));
                     TempRow.Cells.Add(Cell_MoreInfoButton);
                     
@@ -324,11 +325,11 @@ public partial class _Default : System.Web.UI.Page
                     MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />";//Don't need to check this, as there cannot be NULL values of TASK_ID
                     if (LoggedIn)
                     {
-                        MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
-                        MoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Task.Task_ID + "); return false;'>Redigér</a><br />";
+                        MoreInfoCell.Text += "<a href='#' class='NoPrint' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
+                        MoreInfoCell.Text += "<a href='#' class='NoPrint' onclick='EditTask(" + Task.Task_ID + "); return false;'>Redigér</a><br />";
                         if (Task.Task_Status == 2)
                         {
-                            MoreInfoCell.Text += "<a href='.' onclick='SetApprovedComplete(" + Task.Task_ID + ")';'>Godkend Færdig</a>";
+                            MoreInfoCell.Text += "<a href='.' class='NoPrint' onclick='SetApprovedComplete(" + Task.Task_ID + ")';'>Godkend Færdig</a>";
                         }
                     }
                     MoreInfoRow.Cells.Add(MoreInfoCell);
@@ -377,6 +378,7 @@ public partial class _Default : System.Web.UI.Page
                         if (Task.Tasks1.Count > 0)
                         {
                             Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'</input>";
+                            Cell_ToggleButton.CssClass = "NoPrint";
                             TempRow.Cells.Add(Cell_ToggleButton);
                         }
                         Table_Tasks.Rows.Add(TempRow);
@@ -391,6 +393,7 @@ public partial class _Default : System.Web.UI.Page
                         Row_Subtask.CssClass = "ImportantSubRow " + "Maintask" + Task.Task_ID;
 
                         TableCell MoreInfoButtonCell = new TableCell();
+                        MoreInfoButtonCell.CssClass = "NoPrint";
                         MoreInfoButtonCell.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Subtask.Task_ID + ")'</input>";
                         Row_Subtask.Cells.Add(MoreInfoButtonCell);
 
@@ -478,7 +481,7 @@ public partial class _Default : System.Web.UI.Page
                         SubMoreInfoCell.Text = "TaskID: " + Subtask.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
                         if (LoggedIn)
                         {
-                            SubMoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Subtask.Task_ID + "); return false;'>Redigér</a><br />";
+                            SubMoreInfoCell.Text += "<a href='#' class='NoPrint' onclick='EditTask(" + Subtask.Task_ID + "); return false;'>Redigér</a><br />";
                         }
                         SubMoreInfoRow.Cells.Add(SubMoreInfoCell);
 
@@ -538,6 +541,7 @@ public partial class _Default : System.Web.UI.Page
                 //TempRow.BackColor = System.Drawing.Color.OrangeRed;
 
                 TableCell MoreInfoButton = new TableCell();
+                MoreInfoButton.CssClass = "NoPrint";
                 MoreInfoButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Task.Task_ID + ")'</input>";
                 TempRow.Cells.Add(MoreInfoButton);
 
@@ -628,11 +632,11 @@ public partial class _Default : System.Web.UI.Page
                 MoreInfoCell.Text = "TaskID: " + Task.Task_ID + "<br />";//Don't need to check this, as there cannot be NULL values of TASK_ID
                 if (LoggedIn)
                 {
-                    MoreInfoCell.Text += "<a href='#' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
-                    MoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Task.Task_ID + "); return false;'>Redigér</a><br />";
+                    MoreInfoCell.Text += "<a href='#' class='NoPrint' onclick='CreateSubTask(" + Task.Task_ID + "); return false;'>Opret Underopgave</a><br />";
+                    MoreInfoCell.Text += "<a href='#' class='NoPrint' onclick='EditTask(" + Task.Task_ID + "); return false;'>Redigér</a><br />";
                     if (Task.Task_Status == 2)
                     {
-                        MoreInfoCell.Text += "<a href='.' onclick='SetApprovedComplete(" + Task.Task_ID + ");''>Godkend Færdig</a>";
+                        MoreInfoCell.Text += "<a href='.' class='NoPrint' onclick='SetApprovedComplete(" + Task.Task_ID + ");''>Godkend Færdig</a>";
                     }
                 }
 
@@ -682,6 +686,7 @@ public partial class _Default : System.Web.UI.Page
                     if (Task.Tasks1.Count > 0)
                     {
                         Cell_ToggleButton.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleSubTasks(" + Task.Task_ID + ")'>";
+                        Cell_ToggleButton.CssClass = "NoPrint";
                         TempRow.Cells.Add(Cell_ToggleButton);
                     }
                     Table_Tasks.Rows.Add(TempRow);
@@ -695,7 +700,8 @@ public partial class _Default : System.Web.UI.Page
                     Row_Subtask.CssClass = "Maintask" + Task.Task_ID;
 
                     TableCell MoreInfoButtonCell = new TableCell();
-                    MoreInfoButtonCell.Text = "<input type='button' Class='TableButtonToggleSubTask' onclick='ToggleMoreInfo(" + Subtask.Task_ID + ")'</input>";
+                    MoreInfoButtonCell.CssClass = "NoPrint";
+                    MoreInfoButtonCell.Text = "<input type='button' Class='TableButtonToggleSubTask NoPrint' onclick='ToggleMoreInfo(" + Subtask.Task_ID + ")'</input>";
                     Row_Subtask.Cells.Add(MoreInfoButtonCell);
 
                     TableCell Cell_SubTaskName = new TableCell();
@@ -774,14 +780,14 @@ public partial class _Default : System.Web.UI.Page
                     SubMoreInfoRow.CssClass = "HiddenInfoRow SubInfo" + Task.Task_ID; //We use the class to hide all on load once document is loaded. SubInfo + MainTaskID to hide if clicking the SubTask button.
                     SubMoreInfoRow.ID = "TaskInfo" + Subtask.Task_ID;
 
-                    TableCell SubFillerCell = new TableCell(); //Button for EDIT TASK??
+                    TableCell SubFillerCell = new TableCell();
                     SubMoreInfoRow.Cells.Add(SubFillerCell);
 
                     TableCell SubMoreInfoCell = new TableCell();
                     SubMoreInfoCell.Text = "TaskID: " + Subtask.Task_ID + "<br />"; //Don't need to check this, as there cannot be NULL values of TASK_ID
                     if (LoggedIn)
                     {
-                        SubMoreInfoCell.Text += "<a href='#' onclick='EditTask(" + Subtask.Task_ID + "); return false;'>Redigér</a><br />";
+                        SubMoreInfoCell.Text += "<a href='#' class='NoPrint' onclick='EditTask(" + Subtask.Task_ID + "); return false;'>Redigér</a><br />";
                     }
                     SubMoreInfoRow.Cells.Add(SubMoreInfoCell);
 

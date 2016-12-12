@@ -1,0 +1,67 @@
+﻿/*NEED TO FIGURE OUT SOMETHING SO WE CAN PRINT COLORS!*/
+
+@media{
+    * {
+        font-family:'Segoe UI';
+        font-size:8px;
+    }
+    .NoPrint{
+        display:none;
+    }
+    table td{
+        border-bottom:1px solid black;
+        border-left:0px;
+        border-right:0px;
+        border-top:0px;
+        margin:0px;
+    }
+    .vertical-text-table img{
+        margin-left:-5px;
+        margin-right:-5px;
+        margin-top:-5px;
+        margin-bottom:-5px;
+        height:65px;
+        width:20px;
+    }
+    .TableHeaderRow h1{
+        font-size:12px;
+        text-align:center;
+    }
+    .vertical-text-table
+    {
+        padding-left:-2em;
+        padding-right:-2em;
+        padding-top:-2em;
+        padding-bottom:-2em;
+        width:20px;
+        padding:0px;
+        margin:0px;
+    }
+    .ImportantRow{
+        background-color:orange;
+    }
+    .ImportantSubRow{
+        background-color:wheat;
+    }
+    .TableButtonToggleSubTask{
+        float:left;
+        height:20px;
+        width:100%;
+    }
+    .TableButton{
+        background-color:transparent;
+        border-color:transparent;
+        width:100%;
+        height:20px;
+    }
+    .TableChanges{
+    }
+    .TableHeaderCellRow1 {
+    }
+    .TableHeaderCellRow2{
+    }
+    .TableHeaderCellRow3 {
+    }
+    .TableHeaderCellRow4 {
+    }
+}
