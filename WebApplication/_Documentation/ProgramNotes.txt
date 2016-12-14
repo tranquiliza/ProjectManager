@@ -34,7 +34,7 @@ Frontend/Backend Improvements:
 		It's possible to make it so the frontend adapts to the login given, so certain passwords have access to certain modules. (1 for staff, 1 for boss).
 
 BUGS:
-	
+	Print image is too small? What happened here??
 
 BugFixes:
 	Postbacks were causing the dropdown menu to reset causing insert statement to insert NULL values
