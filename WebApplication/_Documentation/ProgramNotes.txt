@@ -41,3 +41,5 @@ BugFixes:
 	Partial hit unfolding subtasks
 	No longer needing to redo first task_status change
 	Fixed Database whitespacing problem
+
+TestHosting: http://danielolsen-001-site1.gtempurl.com/ Af SmarterASP.net
