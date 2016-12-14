@@ -24,7 +24,7 @@ public partial class ProjectManagerEntities : DbContext
     }
 
     public virtual DbSet<Departments> Departments { get; set; }
+    public virtual DbSet<Logins> Logins { get; set; }
     public virtual DbSet<Task_Status> Task_Status { get; set; }
     public virtual DbSet<Tasks> Tasks { get; set; }
-    public virtual DbSet<Logins> Logins { get; set; }
 }

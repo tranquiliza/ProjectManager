@@ -45,4 +45,4 @@ values
 
 insert into Departments(Department_ID, Department_Name)
 values
-(0, 'Development')
+(0, 'Udvikling')
