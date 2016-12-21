@@ -23,7 +23,7 @@ Det ønskes at kunne fremhæve specialt vigtige opgaver, med en tydelig farve og
 Det ønskes at kunne sammenkoble opgaver med afdeler (Domæne viden mangles). (Virksomheds besøg skal hjælpe på dette). 
 Eks:(Mulighed for at trække information om opgaver i Hovedbygning.)
 
-Mulighed for at opgaver kan tilknyttes info om: Extern eller Intern opgave, således brugeren kan se om opgaven skal udføres af fagfolk. 
+Mulighed for at opgaver kan tilknyttes info om: Extern eller Intern opgave, således brugeren kan se om opgaven skal udføres af fagfolk. (Ekstern i database, under afdelinger)
 
 Større opgaver kan have flere underpunkter som indeholder mere specifikke opgaver, som alle skal løses for at løse primær opgave. Disse underpunkter indeholder:
 	* Navn

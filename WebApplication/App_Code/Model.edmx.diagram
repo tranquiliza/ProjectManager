@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2ab154c088d740468b8fb356bab984c0" Name="Diagram1">
+      <Diagram DiagramId="a8340a749418498ea88d71acd69eb44a" Name="Diagram1">
         <EntityTypeShape EntityType="ProjectManagerModel.Departments" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjectManagerModel.Logins" Width="1.5" PointX="5.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerModel.Logins" Width="1.5" PointX="5.75" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerModel.Task_Status" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerModel.Tasks" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
-        <AssociationConnector Association="ProjectManagerModel.FK__Tasks__Task_Depa__145C0A3F" ManuallyRouted="false" />
-        <AssociationConnector Association="ProjectManagerModel.FK__Tasks__Task_Stat__15502E78" ManuallyRouted="false" />
-        <AssociationConnector Association="ProjectManagerModel.FK__Tasks__Task_Main__164452B1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerModel.FK__Tasks__Task_Depa__1DE57479" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerModel.FK__Tasks__Task_Stat__1ED998B2" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerModel.FK__Tasks__Task_Main__1FCDBCEB" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
