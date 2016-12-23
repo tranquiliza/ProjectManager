@@ -8,8 +8,8 @@ using ProjectManagerMVC.Data;
 namespace ProjectManagerMVC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20161223055602_Initial")]
-    partial class Initial
+    [Migration("20161223075316_Maintainance_Tasks_StatusFK")]
+    partial class Maintainance_Tasks_StatusFK
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,6 +173,54 @@ namespace ProjectManagerMVC.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Maintainance_Task", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("ApprovedComplete");
+
+                    b.Property<DateTime>("ApprovedDate");
+
+                    b.Property<DateTime>("CompletionDate");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("Deadline");
+
+                    b.Property<string>("Description")
+                        .HasAnnotation("MaxLength", 1000);
+
+                    b.Property<bool>("IsPriority");
+
+                    b.Property<string>("Name")
+                        .HasAnnotation("MaxLength", 200);
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int?>("Status_ID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Status_ID");
+
+                    b.ToTable("Maintainance_Task");
+                });
+
+            modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Status", b =>
+                {
+                    b.Property<int>("Status_ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Status_Name");
+
+                    b.HasKey("Status_ID");
+
+                    b.ToTable("Status");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -208,6 +256,13 @@ namespace ProjectManagerMVC.Data.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Maintainance_Task", b =>
+                {
+                    b.HasOne("ProjectManagerMVC.Models.TaskManagerViewModels.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("Status_ID");
                 });
         }
     }

@@ -8,9 +8,10 @@ using ProjectManagerMVC.Data;
 namespace ProjectManagerMVC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161223080747_AllFKsFromTask")]
+    partial class AllFKsFromTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -270,13 +271,13 @@ namespace ProjectManagerMVC.Data.Migrations
 
             modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Status", b =>
                 {
-                    b.Property<int>("Status_ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Status_Name")
+                    b.Property<string>("Name")
                         .HasAnnotation("MaxLength", 100);
 
-                    b.HasKey("Status_ID");
+                    b.HasKey("ID");
 
                     b.ToTable("Status");
                 });

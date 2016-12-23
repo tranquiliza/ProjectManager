@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagerMVC.Models;
+using ProjectManagerMVC.Models.TaskManagerViewModels;
 
 namespace ProjectManagerMVC.Data
 {
@@ -22,5 +23,7 @@ namespace ProjectManagerMVC.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Maintainance_Task> Maintainance_Task { get; set; }
     }
 }
