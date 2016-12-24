@@ -7,12 +7,13 @@
 <h2>Opgave Liste</h2>
 
 <p>
-    <a asp-action="Create">Opret Ny Opgave</a>
+    <a class="btn btn-info" asp-action="Create">Ny Opgave</a>
 </p>
 
-<table class="table">
+<table class="table table-hover table-condensed">
     <thead>
         <tr>
+            <th class="vertical-table"></th>
             <th>
                 <h4>Opgave Navn</h4>
                @* @Html.DisplayNameFor(model => model.Name)*@
@@ -82,6 +83,11 @@
 {
         <tr>
             <td>
+                @*<a class="btn btn-default" asp-action="Edit" asp-route-id="@item.ID">Rediger</a>*@
+                <a class="" asp-action="Details" asp-route-id="@item.ID">Detaljer</a>
+                @*<a asp-action="Delete" asp-route-id="@item.ID">Slet</a>*@
+            </td>
+            <td>
                 @Html.DisplayFor(modelitem => item.Name)
             </td>
             <td>
@@ -132,16 +138,11 @@
             }
             else
             {
-                <td>x</td>
-                <td>x</td>
-                <td>x</td>
-                <td>x</td>
+                <td>n</td>
+                <td>n</td>
+                <td>n</td>
+                <td>n</td>
             }
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Rediger</a><br />
-                <a asp-action="Details" asp-route-id="@item.ID">Detaljer</a>
-                @*<a asp-action="Delete" asp-route-id="@item.ID">Slet</a>*@
-            </td>
         </tr>
         @*<tr>
             <td>

@@ -22,7 +22,14 @@ namespace ProjectManagerMVC.Controllers
         // GET: Maintainance_Task
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Maintainance_Task.Include(c => c.Status).Include(c => c.Staff).ToListAsync());
+            //How can we check for user, to determine what view to show?
+
+            return View(await _context.Maintainance_Task
+                .Include(c => c.Status)
+                .Include(c => c.Staff)
+                .OrderBy(c => c.Status.Status_ID)
+                .ThenBy(c => c.CreationDate)
+                .ToListAsync());
         }
 
         // GET: Maintainance_Task/Details/5
