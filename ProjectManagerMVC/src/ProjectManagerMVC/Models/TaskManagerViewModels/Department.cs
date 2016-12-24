@@ -11,10 +11,11 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
     {
         [Key]
         public int ID { get; set; }
-
+        
         [ForeignKey("Business_ID")]
         public virtual Business Business { get; set; }
 
+        [Required]
         [StringLength(200)]
         public string Name { get; set; }
     }

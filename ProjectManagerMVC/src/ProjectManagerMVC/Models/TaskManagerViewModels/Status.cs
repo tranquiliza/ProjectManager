@@ -9,9 +9,10 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
     public class Status
     {
         [Key]
-        public int ID { get; set; }
+        public int Status_ID { get; set; }
 
+        [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Status_Name { get; set; }
     }
 }

@@ -1,16 +1,49 @@
 @model IEnumerable<ProjectManagerMVC.Models.TaskManagerViewModels.Maintainance_Task>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Opgaver";
 }
 
-<h2>Index</h2>
+<h2>Opgave Liste</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Opret Ny Opgave</a>
 </p>
+
 <table class="table">
     <thead>
+        <tr>
+            <th>
+                <h4>Opgave Navn</h4>
+               @* @Html.DisplayNameFor(model => model.Name)*@
+            </th>
+            <th>
+                <h4>Action</h4>
+                @*@Html.DisplayNameFor(model => model.Description)*@
+            </th>
+            <th>
+                <h4>Forventet Start</h4>
+                @*@Html.DisplayNameFor(model => model.StartDate)*@
+            </th>
+            <th>
+                <h4>Personale</h4>
+                @*@Html.DisplayNameFor(model => model.Staff)*@
+            </th>
+            <th class="vertical-table">
+                <img src="~/images/InProgress.png" />
+            </th>
+            <th class="vertical-table">
+                <img src="~/images/Standby.png" />
+            </th>
+            <th class="vertical-table">
+                <img src="~/images/Complete.png" />
+            </th>
+            <th class="vertical-table">
+                <img src="~/images/AwaitingApproval.png" />
+            </th>
+        </tr>
+    </thead>
+    @*<thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ApprovedComplete)
@@ -42,15 +75,75 @@
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
         </tr>
-    </thead>
+    </thead>*@
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
+            <td>
+                @Html.DisplayFor(modelitem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => item.Staff.ID)
+            </td>
+            @if (item.Status != null)
+            {
+                @switch (item.Status.Status_ID)
+                {
+                    case 1: //If Status == InProgress
+                        <td style="background-color:purple"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        break;
+                    case 2: //If Status == Standby
+                        <td></td>
+                        <td style="background-color:yellow"></td>
+                        <td></td>
+                        <td></td>
+                        break;
+                    case 3://If Status == Complete
+                        <td></td>
+                        <td></td>
+                        <td style="background-color:green"></td>
+                        <td></td>
+                        break;
+                    case 4://If Status == AwaitingApproval
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="background-color:red"></td>
+                        break;
+
+                    default: //We should only hit this is there is no status? Which shouldn't be a thing.
+                        <td>x</td>
+                        <td>x</td>
+                        <td>x</td>
+                        <td>x</td>
+                        break;
+                }
+            }
+            else
+            {
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+            }
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Rediger</a><br />
+                <a asp-action="Details" asp-route-id="@item.ID">Detaljer</a>
+                @*<a asp-action="Delete" asp-route-id="@item.ID">Slet</a>*@
+            </td>
+        </tr>
+        @*<tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ApprovedComplete)
             </td>
@@ -82,14 +175,11 @@
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                <a asp-action="Edit" asp-route-id="@item.ID">Rediger</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Detaljer</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Slet</a>
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+        </tr>*@
 }
     </tbody>
 </table>

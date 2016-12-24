@@ -22,7 +22,7 @@ namespace ProjectManagerMVC.Controllers
         // GET: Maintainance_Task
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Maintainance_Task.ToListAsync());
+            return View(await _context.Maintainance_Task.Include(c => c.Status).Include(c => c.Staff).ToListAsync());
         }
 
         // GET: Maintainance_Task/Details/5

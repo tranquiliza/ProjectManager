@@ -48,3 +48,22 @@ textarea {
     display: none
   }
 }
+
+/*Custom Styling for Verital Columns on Tables*/
+.vertical-table
+{
+    padding-left:-2em;
+    padding-right:-2em;
+    padding-top:-2em;
+    padding-bottom:-2em;
+    width:20px;
+    padding:0px;
+    margin:0px;
+}
+.vertical-table img
+{
+    margin-left:-8px;
+    margin-right:-8px;
+    margin-top:-8px;
+    margin-bottom:-8px;
+}
