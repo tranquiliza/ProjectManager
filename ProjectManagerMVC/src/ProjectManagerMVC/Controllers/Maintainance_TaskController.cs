@@ -23,7 +23,7 @@ namespace ProjectManagerMVC.Controllers
         public async Task<IActionResult> Index()
         {
             //How can we check for user, to determine what view to show?
-
+            
             return View(await _context.Maintainance_Task
                 .Include(c => c.Status)
                 .Include(c => c.Staff)
