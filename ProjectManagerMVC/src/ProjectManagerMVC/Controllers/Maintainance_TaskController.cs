@@ -25,10 +25,9 @@ namespace ProjectManagerMVC.Controllers
             //How can we check for user, to determine what view to show?
             
             return View(await _context.Maintainance_Task
-                .Include(c => c.Status)
                 .Include(c => c.Staff)
+                .Include(c => c.Status)
                 .OrderBy(c => c.Status.Status_ID)
-                .ThenBy(c => c.CreationDate)
                 .ToListAsync());
         }
 

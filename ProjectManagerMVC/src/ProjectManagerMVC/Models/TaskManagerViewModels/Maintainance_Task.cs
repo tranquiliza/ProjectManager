@@ -11,11 +11,11 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
     {
         [Key]
         public int ID { get; set; }
-        
+
         [Required]
         [ForeignKey("Status_ID")]
         [Display(Name = "Status")]
-        public virtual Status Status { get; set; }
+        public Status Status { get; set; }
 
         [ForeignKey("Business_ID")]
         [Display(Name = "Virksomhed")]

@@ -101,44 +101,38 @@
                 {
                     case 1: //If Status == InProgress
                         <td style="background-color:purple"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         break;
                     case 2: //If Status == Standby
                         <td></td>
-                        <td style="background-color:yellow"></td>
-                        <td></td>
-                        <td></td>
+                            <td style="background-color:yellow"></td>
+                            <td></td>
+                            <td></td>
                         break;
                     case 3://If Status == Complete
                         <td></td>
-                        <td></td>
-                        <td style="background-color:green"></td>
-                        <td></td>
+                            <td></td>
+                            <td style="background-color:green"></td>
+                            <td></td>
                         break;
                     case 4://If Status == AwaitingApproval
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="background-color:red"></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color:red"></td>
                         break;
 
                     default: //We should only hit this is there is no status? Which shouldn't be a thing.
                         <td>x</td>
-                        <td>x</td>
-                        <td>x</td>
-                        <td>x</td>
+                            <td>x</td>
+                            <td>x</td>
+                            <td>x</td>
                         break;
                 }
             }
-            else
-            {
-                <td>n</td>
-                <td>n</td>
-                <td>n</td>
-                <td>n</td>
-            }
+                
         </tr>
         @*<tr>
             <td>
