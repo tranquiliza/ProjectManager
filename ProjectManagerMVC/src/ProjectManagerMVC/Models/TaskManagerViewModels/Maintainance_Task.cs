@@ -12,8 +12,12 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
         [Key]
         public int ID { get; set; }
 
+        //Foreign Key (MVC5???????)
+        [Display(Name="Status")]
+        public int StatusId { get; set; }
+
         [Required]
-        [ForeignKey("Status_ID")]
+        [ForeignKey("StatusId")]
         [Display(Name = "Status")]
         public Status Status { get; set; }
 
