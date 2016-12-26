@@ -4,11 +4,10 @@
     ViewData["Title"] = "Opret Opgave";
 }
 
-<h2>Opret</h2>
+<h2>Opret Opgave</h2>
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Opgave</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         
@@ -39,50 +38,11 @@
         <div class="form-group">
             <label asp-for="Staff_ID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="Staff_ID" class="form-control" asp-items="ViewBag.Staff_ID"></select>
+                <select asp-for="Staff_ID" class="form-control" asp-items="ViewBag.Staff_ID">
+                    <option></option>
+                </select>
             </div>
         </div>
-
-        @*<div class="form-group"> //Not needed anymore
-            <label asp-for="Status.Status_ID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Status.Status_ID" class="form-control" />
-                <span asp-validation-for="Status.Status_ID" class="text-danger"></span>
-            </div>
-        </div>*@
-        
-        @*<div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <input asp-for="ApprovedComplete" />
-                    <label asp-for="ApprovedComplete"></label>
-                </div>
-            </div>
-        </div>*@
-
-        @*<div class="form-group">
-            <label asp-for="ApprovedDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ApprovedDate" class="form-control" />
-                <span asp-validation-for="ApprovedDate" class="text-danger" />
-            </div>
-        </div>*@
-
-        @*<div class="form-group">
-            <label asp-for="CompletionDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CompletionDate" class="form-control" />
-                <span asp-validation-for="CompletionDate" class="text-danger" />
-            </div>
-        </div>*@
-
-        @*<div class="form-group">
-            <label asp-for="CreationDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger" />
-            </div>
-        </div>*@
 
         <div class="form-group">
             <label asp-for="Deadline" class="col-md-2 control-label"></label>
@@ -108,13 +68,6 @@
                 </div>
             </div>
         </div>
-
-        @*<div class="form-group">
-            <label asp-for="StatusId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
-            </div>
-        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

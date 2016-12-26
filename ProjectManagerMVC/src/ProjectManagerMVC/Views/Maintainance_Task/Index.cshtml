@@ -40,41 +40,8 @@
             </th>
         </tr>
     </thead>
-    @*<thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ApprovedComplete)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApprovedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompletionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deadline)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPriority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-        </tr>
-    </thead>*@
     <tbody>
+
 @foreach (var item in Model)
 {
         <tr>
@@ -101,76 +68,39 @@
                 {
                     case 1: //If Status == InProgress
                         <td style="background-color:purple"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="2"></a></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="3"></a></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="4"></a></td>
                         break;
                     case 2: //If Status == Standby
-                        <td></td>
-                            <td style="background-color:yellow"></td>
-                            <td></td>
-                            <td></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="1"></a></td>
+                        <td style="background-color:yellow"></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="3"></a></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="4"></a></td>
                         break;
                     case 3://If Status == Complete
-                        <td></td>
-                            <td></td>
-                            <td style="background-color:green"></td>
-                            <td></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="1"></a></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="2"></a></td>
+                        <td style="background-color:green"></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="4"></a></td>
                         break;
                     case 4://If Status == AwaitingApproval
-                        <td></td>
-                            <td></td>
-                            <td></td>
-                            <td style="background-color:red"></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="1"></a></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="2"></a></td>
+                        <td><a class="btn btn-info" asp-action="UpdateStatus" asp-route-id="@item.ID" asp-route-newstatus="3"></a></td>
+                        <td style="background-color:red"></td>
                         break;
 
                     default: //We should only hit this is there is no status? Which shouldn't be a thing.
                         <td>x</td>
-                            <td>x</td>
-                            <td>x</td>
-                            <td>x</td>
+                        <td>x</td>
+                        <td>x</td>
+                        <td>x</td>
                         break;
                 }
             }
                 
         </tr>
-        @*<tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovedComplete)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompletionDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPriority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Rediger</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Detaljer</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Slet</a>
-            </td>
-        </tr>*@
 }
     </tbody>
 </table>

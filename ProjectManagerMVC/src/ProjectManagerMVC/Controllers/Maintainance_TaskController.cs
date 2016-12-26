@@ -96,6 +96,50 @@ namespace ProjectManagerMVC.Controllers
             return View(maintainance_Task);
         }
 
+        public async Task<IActionResult> UpdateStatus(int? id, int NewStatus)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var maintainance_Task = await _context.Maintainance_Task.SingleOrDefaultAsync(m => m.ID == id);
+            if (maintainance_Task == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                if (NewStatus != 4 && maintainance_Task.StatusId == 4)
+                {
+                    maintainance_Task.ApprovedDate = DateTime.Now;
+                }
+                if (NewStatus == 4)
+                {
+                    maintainance_Task.ApprovedDate = null;
+                }
+                if (NewStatus == 3)
+                {
+                    maintainance_Task.CompletionDate = DateTime.Now;
+                }
+                maintainance_Task.StatusId = NewStatus;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!Maintainance_TaskExists(maintainance_Task.ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         // POST: Maintainance_Task/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
