@@ -46,8 +46,8 @@
 {
         <tr>
             <td>
-                @*<a class="btn btn-default" asp-action="Edit" asp-route-id="@item.ID">Rediger</a>*@
-                <a class="" asp-action="Details" asp-route-id="@item.ID">Detaljer</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Rediger</a> <br />
+                <a asp-action="Details" asp-route-id="@item.ID">Detaljer</a>
                 @*<a asp-action="Delete" asp-route-id="@item.ID">Slet</a>*@
             </td>
             <td>
@@ -99,7 +99,6 @@
                         break;
                 }
             }
-                
         </tr>
 }
     </tbody>

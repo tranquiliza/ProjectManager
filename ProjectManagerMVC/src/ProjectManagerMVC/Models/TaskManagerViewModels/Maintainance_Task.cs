@@ -84,11 +84,5 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
         [DataType(DataType.Date)]
         [Display(Name = "Dato for godkendelse")]
         public DateTime? ApprovedDate { get; set; }
-
-        public Maintainance_Task()
-        {
-            CreationDate = DateTime.Now;
-            StatusId = 4;
-        }
     }
 }

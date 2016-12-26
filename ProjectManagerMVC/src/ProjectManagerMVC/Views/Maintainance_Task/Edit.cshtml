@@ -1,46 +1,44 @@
 @model ProjectManagerMVC.Models.TaskManagerViewModels.Maintainance_Task
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Rediger Opgave";
 }
 
-<h2>Edit</h2>
+<h2>Rediger Opgave</h2>
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>Maintainance_Task</h4>
+        <h4>Opgave</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="ID" />
+        
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <input asp-for="ApprovedComplete" />
-                    <label asp-for="ApprovedComplete"></label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ApprovedDate" class="col-md-2 control-label"></label>
+            <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="ApprovedDate" class="form-control" />
-                <span asp-validation-for="ApprovedDate" class="text-danger" />
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
-            <label asp-for="CompletionDate" class="col-md-2 control-label"></label>
+            <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="CompletionDate" class="form-control" />
-                <span asp-validation-for="CompletionDate" class="text-danger" />
+                <textarea asp-for="Description" class="form-control">
+
+                </textarea>
+                <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
-            <label asp-for="CreationDate" class="col-md-2 control-label"></label>
+            <label asp-for="StartDate" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger" />
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
             <label asp-for="Deadline" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -48,13 +46,31 @@
                 <span asp-validation-for="Deadline" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <label asp-for="Staff_ID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger" />
+                <select asp-for="Staff_ID" class="form-control" asp-items="ViewBag.Staff_ID">
+                    <option></option>
+                </select>
             </div>
         </div>
+
+        <div class="form-group">
+            <label asp-for="Price" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StatusId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
+            </div>
+        </div>
+        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <div class="checkbox">
@@ -63,37 +79,28 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Name" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger" />
+        @if (Model.StatusId == 3)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <input asp-for="ApprovedComplete" />
+                        <label asp-for="ApprovedComplete"></label>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Price" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="StartDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger" />
-            </div>
-        </div>
+        }
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Gem" class="btn btn-default" />
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tilbage</a>
 </div>
 
 @section Scripts {

@@ -28,9 +28,7 @@ namespace ProjectManagerMVC.Controllers
                             .OrderBy(m => m.Status.Status_ID)
                             where Item.ApprovedComplete != true
                             select Item;
-
-            //var applicationDbContext = _context.Maintainance_Task.Include(m => m.Status);
-
+            //Return different views dependant on login
             return View(await Selection.ToListAsync());
             //return View(await applicationDbContext.ToListAsync());
         }
@@ -43,12 +41,11 @@ namespace ProjectManagerMVC.Controllers
                 return NotFound();
             }
 
-            var maintainance_Task = await _context.Maintainance_Task.SingleOrDefaultAsync(m => m.ID == id);
+            var maintainance_Task = await _context.Maintainance_Task.Include(m => m.Status).Include(m => m.Staff).SingleOrDefaultAsync(m => m.ID == id);
             if (maintainance_Task == null)
             {
                 return NotFound();
             }
-
             return View(maintainance_Task);
         }
 
@@ -69,11 +66,13 @@ namespace ProjectManagerMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                maintainance_Task.CreationDate = DateTime.Now;
+                maintainance_Task.StatusId = 4;
                 _context.Add(maintainance_Task);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email", maintainance_Task.Staff_ID);
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Initials", maintainance_Task.Staff_ID);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
         }
@@ -91,9 +90,41 @@ namespace ProjectManagerMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email", maintainance_Task.Staff_ID);
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Initials", maintainance_Task.Staff_ID);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
+        }
+
+        public async Task<IActionResult> ApproveComplete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var maintainance_Task = await _context.Maintainance_Task.SingleOrDefaultAsync(m => m.ID == id);
+            if (maintainance_Task == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                maintainance_Task.ApprovedComplete = true;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!Maintainance_TaskExists(maintainance_Task.ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> UpdateStatus(int? id, int NewStatus)
@@ -145,7 +176,7 @@ namespace ProjectManagerMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,ApprovedComplete,ApprovedDate,CompletionDate,CreationDate,Deadline,Description,IsPriority,Name,Price,Staff_ID,StartDate,StatusId")] Maintainance_Task maintainance_Task)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,ApprovedComplete,Deadline,Description,IsPriority,Name,Price,Staff_ID,StartDate,StatusId")] Maintainance_Task maintainance_Task)
         {
             if (id != maintainance_Task.ID)
             {
@@ -172,7 +203,7 @@ namespace ProjectManagerMVC.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email", maintainance_Task.Staff_ID);
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Initials", maintainance_Task.Staff_ID);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
         }
