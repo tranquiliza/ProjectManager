@@ -22,7 +22,7 @@ namespace ProjectManagerMVC.Controllers
         // GET: Maintainance_TaskTEST
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Maintainance_Task.Include(m => m.Status);
+            var applicationDbContext = _context.Maintainance_Task.Include(m => m.Staff).Include(m => m.Status);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,6 +46,7 @@ namespace ProjectManagerMVC.Controllers
         // GET: Maintainance_TaskTEST/Create
         public IActionResult Create()
         {
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email");
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name");
             return View();
         }
@@ -55,7 +56,7 @@ namespace ProjectManagerMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,ApprovedComplete,ApprovedDate,CompletionDate,CreationDate,Deadline,Description,IsPriority,Name,Price,StartDate,StatusId")] Maintainance_Task maintainance_Task)
+        public async Task<IActionResult> Create([Bind("ID,ApprovedComplete,ApprovedDate,CompletionDate,CreationDate,Deadline,Description,IsPriority,Name,Price,Staff_ID,StartDate,StatusId")] Maintainance_Task maintainance_Task)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +64,7 @@ namespace ProjectManagerMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email", maintainance_Task.Staff_ID);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
         }
@@ -80,6 +82,7 @@ namespace ProjectManagerMVC.Controllers
             {
                 return NotFound();
             }
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email", maintainance_Task.Staff_ID);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
         }
@@ -89,7 +92,7 @@ namespace ProjectManagerMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,ApprovedComplete,ApprovedDate,CompletionDate,CreationDate,Deadline,Description,IsPriority,Name,Price,StartDate,StatusId")] Maintainance_Task maintainance_Task)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,ApprovedComplete,ApprovedDate,CompletionDate,CreationDate,Deadline,Description,IsPriority,Name,Price,Staff_ID,StartDate,StatusId")] Maintainance_Task maintainance_Task)
         {
             if (id != maintainance_Task.ID)
             {
@@ -116,6 +119,7 @@ namespace ProjectManagerMVC.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            ViewData["Staff_ID"] = new SelectList(_context.Set<Staff>(), "ID", "Email", maintainance_Task.Staff_ID);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
         }

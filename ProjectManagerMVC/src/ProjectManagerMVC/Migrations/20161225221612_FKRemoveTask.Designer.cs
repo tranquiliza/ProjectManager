@@ -8,9 +8,10 @@ using ProjectManagerMVC.Data;
 namespace ProjectManagerMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161225221612_FKRemoveTask")]
+    partial class FKRemoveTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -199,58 +200,15 @@ namespace ProjectManagerMVC.Migrations
 
                     b.Property<decimal?>("Price");
 
-                    b.Property<int?>("Staff_ID");
-
                     b.Property<DateTime?>("StartDate");
 
                     b.Property<int>("StatusId");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Staff_ID");
-
                     b.HasIndex("StatusId");
 
                     b.ToTable("Maintainance_Task");
-                });
-
-            modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Staff", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<DateTime>("HiredDate");
-
-                    b.Property<string>("Initials")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 5);
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<string>("MobilePhone")
-                        .IsRequired();
-
-                    b.Property<decimal>("Salary");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<string>("WorkPhone");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Staff");
                 });
 
             modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Status", b =>
@@ -306,10 +264,6 @@ namespace ProjectManagerMVC.Migrations
 
             modelBuilder.Entity("ProjectManagerMVC.Models.TaskManagerViewModels.Maintainance_Task", b =>
                 {
-                    b.HasOne("ProjectManagerMVC.Models.TaskManagerViewModels.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("Staff_ID");
-
                     b.HasOne("ProjectManagerMVC.Models.TaskManagerViewModels.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")

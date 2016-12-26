@@ -13,43 +13,49 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
         public int ID { get; set; }
 
         //Foreign Key
+        [Required]
         [Display(Name="Status")]
         public int StatusId { get; set; }
-
-        [Required]
+        
         [ForeignKey("StatusId")]
         [Display(Name = "Status")]
         public Status Status { get; set; }
 
-        [ForeignKey("Business_ID")]
-        [Display(Name = "Virksomhed")]
-        public virtual Business Business { get; set; }
+        //[ForeignKey("Business_ID")]
+        //[Display(Name = "Virksomhed")]
+        //public virtual Business Business { get; set; }
 
-        [ForeignKey("Department_ID")]
-        [Display(Name = "Afdeling")]
-        public Department Department { get; set; }
+        //[ForeignKey("Department_ID")]
+        //[Display(Name = "Afdeling")]
+        //public Department Department { get; set; }
 
-        [ForeignKey("Maintask_ID")]
-        [Display(Name = "Hovedopgave ID")]
-        public Maintainance_Task Maintask { get; set; }
+        //[ForeignKey("Maintask_ID")]
+        //[Display(Name = "Hovedopgave ID")]
+        //public Maintainance_Task Maintask { get; set; }
+
+        [Display(Name = "Personale")]
+        public int? Staff_ID { get; set; }
 
         [ForeignKey("Staff_ID")]
         [Display(Name = "Personale")]
         public Staff Staff { get; set; }
-        
+
         //TODO
         //Login (So we can have tasks just for users?) 
-        
+
         [Required]
         [StringLength(200, ErrorMessage ="Max 200 chars")]
+        [DataType(DataType.Text)]
         [Display(Name="Navn")]
         public string Name { get; set; }
 
         [Required]
         [StringLength(1000, ErrorMessage ="Max 1000 chars")]
+        [DataType(DataType.MultilineText)]
         [Display(Name="Action")]
         public string Description { get; set; }
 
+        [DataType(DataType.Currency)]
         [Display(Name = "Pris")]
         public decimal? Price { get; set; }
 
@@ -78,5 +84,11 @@ namespace ProjectManagerMVC.Models.TaskManagerViewModels
         [DataType(DataType.Date)]
         [Display(Name = "Dato for godkendelse")]
         public DateTime? ApprovedDate { get; set; }
+
+        public Maintainance_Task()
+        {
+            CreationDate = DateTime.Now;
+            StatusId = 4;
+        }
     }
 }
