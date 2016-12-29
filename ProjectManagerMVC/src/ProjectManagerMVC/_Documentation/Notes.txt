@@ -1,0 +1,2 @@
+﻿https://docs.microsoft.com/en-us/aspnet/core/security/authorization/introduction
+For user roles etc i presume.
