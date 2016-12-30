@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagerMVC.Data;
 using ProjectManagerMVC.Models.TaskManagerViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectManagerMVC.Controllers
 {
@@ -16,20 +17,34 @@ namespace ProjectManagerMVC.Controllers
 
         public Maintainance_TaskController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Maintainance_Task
         public async Task<IActionResult> Index()
         {
+            //Return different views dependant on login
+            //Works with roles.
+            //Different views depending on other user values possible too?
+            if (User.IsInRole("Admin"))
+            {
+                var AdminSelection = from Item in _context.Maintainance_Task
+                                     .Include(m => m.Staff)
+                                     .Include(m => m.Status)
+                                     .OrderBy(m => m.Status.Status_ID)
+                                     where Item.ApprovedComplete == true
+                                     select Item;
+
+                return View(await AdminSelection.ToListAsync());
+            }
             var Selection = from Item in _context.Maintainance_Task
                             .Include(m => m.Staff)
                             .Include(m => m.Status)
                             .OrderBy(m => m.Status.Status_ID)
                             where Item.ApprovedComplete != true
                             select Item;
-            //Return different views dependant on login
             return View(await Selection.ToListAsync());
+
             //return View(await applicationDbContext.ToListAsync());
         }
 
@@ -94,7 +109,7 @@ namespace ProjectManagerMVC.Controllers
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Status_ID", "Status_Name", maintainance_Task.StatusId);
             return View(maintainance_Task);
         }
-
+        
         public async Task<IActionResult> ApproveComplete(int? id)
         {
             if (id == null)
@@ -126,7 +141,7 @@ namespace ProjectManagerMVC.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        
         public async Task<IActionResult> UpdateStatus(int? id, int NewStatus)
         {
             if (id == null)
